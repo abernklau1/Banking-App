@@ -1,12 +1,5 @@
-import { Navbar, Footer } from "../components";
-
 const Dashboard = () => {
-  return (
-    <div>
-      <Navbar />
-      <Footer />
-    </div>
-  );
+  return <div></div>;
 };
 
 export default Dashboard;

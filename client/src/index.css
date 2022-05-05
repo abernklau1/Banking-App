@@ -28,7 +28,8 @@ a {
 
 p,
 button,
-label {
+label,
+span {
   font-family: "IBM Plex Sans", sans-serif;
 }
 
@@ -99,6 +100,14 @@ nav {
   margin: 1.5rem 3rem;
 }
 
+.routing {
+  color: white;
+  display: block;
+  position: absolute;
+  top: 85px;
+  left: 55px;
+}
+
 .nav-list {
   list-style: none;
   display: flex;
@@ -162,6 +171,42 @@ nav {
 .log-btn-container {
   position: relative;
 }
+
+.bars {
+  display: none;
+  position: fixed;
+  width: 50px;
+  height: 50px;
+  right: 20px;
+  top: 30px;
+  background-color: #2932e2;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.nav-list-container-bars {
+  visibility: hidden;
+  display: block;
+  position: fixed;
+  top: 112px;
+  right: -250px;
+  width: 200px;
+  min-height: 100vh;
+  height: 100%;
+  background-color: white;
+  transition: 0.3s;
+  padding: 0 10px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  border-radius: 20px 0 0 20px;
+  border: 2px solid #2932e2;
+}
+
+.visible {
+  visibility: visible;
+  right: 0;
+}
+
 /* HOME */
 
 .home {
@@ -297,15 +342,13 @@ footer {
 }
 /* MEDIA QUERIES */
 
-@media (max-width: 800px) {
-  .nav-list {
-    flex-wrap: wrap;
-    margin-right: 0;
-    margin-left: 8rem;
+@media (max-width: 890px) {
+  .routing {
+    top: 85px;
   }
 
   .logo {
-    margin-top: 3rem;
+    margin-top: 1.5rem;
   }
 
   .logo-container {
@@ -318,5 +361,26 @@ footer {
 
   .home-par {
     top: 0;
+  }
+  .nav-list-container {
+    display: none;
+  }
+
+  .nav-list {
+    flex-wrap: wrap;
+    margin-left: 0;
+    text-align: left;
+  }
+
+  .nav-link {
+    color: #2932e2;
+  }
+
+  .log-btn-container {
+    margin-left: 20px;
+  }
+
+  .bars {
+    display: inline;
   }
 }

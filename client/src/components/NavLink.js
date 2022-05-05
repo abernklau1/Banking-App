@@ -1,5 +1,3 @@
-import React from "react";
-
 const NavLink = ({ href, text }) => {
   return (
     <li className="nav-list-item">

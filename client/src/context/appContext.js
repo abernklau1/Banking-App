@@ -6,6 +6,7 @@ import {
   SETUP_USER_SUCCESS,
   SETUP_USER_ERROR,
   LOGOUT_USER,
+  TOGGLE_SIDEBAR,
 } from "./actions";
 import reducer from "./reducer";
 import axios from "axios";
@@ -24,6 +25,7 @@ const initialState = {
   token: token,
   userLocation: userLocation || "",
   isSignedIn: signedIn || false,
+  showSidebar: false,
 };
 
 const AppContext = createContext();
@@ -83,6 +85,10 @@ const AppProvider = ({ children }) => {
     removeUserFromLocalStorage();
   };
 
+  const toggleSidebar = () => {
+    dispatch({ type: TOGGLE_SIDEBAR });
+  };
+
   const authFetch = axios.create({ baseURL: "/api/v1" });
 
   authFetch.interceptors.request.use(
@@ -109,7 +115,7 @@ const AppProvider = ({ children }) => {
 
   return (
     <AppContext.Provider
-      value={{ ...state, displayAlert, setupUser, logoutUser }}
+      value={{ ...state, displayAlert, setupUser, logoutUser, toggleSidebar }}
     >
       {children}
     </AppContext.Provider>

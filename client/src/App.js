@@ -10,15 +10,15 @@ const App = () => {
           <Route path="/about" element={<About />} />
           <Route path="/support" element={<Support />} />
           <Route path="/register" element={<Register />} />
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          />
         </Route>
-        <Route
-          path="/dashboard"
-          element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          }
-        />
         <Route path="*" element={<Error />} />
       </Routes>
     </BrowserRouter>
