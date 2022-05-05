@@ -1,6 +1,6 @@
 const FormInput = (props) => {
   return (
-    <div class="form-row">
+    <div className="form-row">
       <label htmlFor={props.name} className="form-label">
         {props.labelText || props.name}
       </label>
