@@ -43,6 +43,7 @@ const reducer = (state, action) => {
       showAlert: true,
       alertType: "success",
       alertText: action.payload.alertText,
+      isSignedIn: action.payload.isSignedIn,
     };
   }
   if (action.type === SETUP_USER_ERROR) {
@@ -61,6 +62,7 @@ const reducer = (state, action) => {
       user: null,
       token: null,
       userLocation: "",
+      isSignedIn: false,
     };
   }
   throw new Error(`no such action: ${action.type}`);

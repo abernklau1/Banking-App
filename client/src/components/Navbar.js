@@ -1,14 +1,9 @@
-import React from "react";
 import NavLink from "./NavLink";
-
-let pages = {
-  "": "ATM Locations",
-  "/about": "About",
-  "/support": "Support",
-  "/register": "Register",
-};
+import { useAppContext } from "../context/appContext";
+import NavUser from "./NavUser";
 
 const Navbar = () => {
+  const { isSignedIn } = useAppContext();
   return (
     <nav>
       <div>
@@ -18,9 +13,10 @@ const Navbar = () => {
       </div>
       <div className="nav-list-container">
         <ul className="nav-list">
-          {Object.entries(pages).map(([key, value], index) => {
-            return <NavLink key={index} href={key} text={value} />;
-          })}
+          <NavLink href="" text="ATM Locations" />
+          <NavLink href="/about" text="About" />
+          <NavLink href="/support" text="Support" />
+          {isSignedIn ? <NavUser /> : <NavLink href="/register" text="Login" />}
         </ul>
       </div>
     </nav>

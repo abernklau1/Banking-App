@@ -13,6 +13,7 @@ import axios from "axios";
 const user = localStorage.getItem("user");
 const token = localStorage.getItem("token");
 const userLocation = localStorage.getItem("location");
+const signedIn = localStorage.getItem("signedIn");
 
 const initialState = {
   isLoading: false,
@@ -22,7 +23,7 @@ const initialState = {
   user: user ? JSON.parse(user) : null,
   token: token,
   userLocation: userLocation || "",
-  jobLocation: userLocation || "",
+  isSignedIn: signedIn || false,
 };
 
 const AppContext = createContext();
@@ -41,16 +42,18 @@ const AppProvider = ({ children }) => {
     }, 3000);
   };
 
-  const addUserToLocalStorage = ({ user, token, location }) => {
+  const addUserToLocalStorage = ({ user, token, location, isSignedIn }) => {
     localStorage.setItem("user", JSON.stringify(user));
     localStorage.setItem("token", token);
     localStorage.setItem("location", location);
+    localStorage.setItem("signedIn", isSignedIn);
   };
 
   const removeUserFromLocalStorage = () => {
     localStorage.removeItem("user");
     localStorage.removeItem("token");
     localStorage.removeItem("location");
+    localStorage.removeItem("signedIn");
   };
 
   const setupUser = async ({ currentUser, endPoint, alertText }) => {
@@ -63,9 +66,9 @@ const AppProvider = ({ children }) => {
       const { user, token, location } = data;
       dispatch({
         type: SETUP_USER_SUCCESS,
-        payload: { user, token, location, alertText },
+        payload: { user, token, location, alertText, isSignedIn: true },
       });
-      addUserToLocalStorage({ user, token, location });
+      addUserToLocalStorage({ user, token, location, isSignedIn: true });
     } catch (error) {
       dispatch({
         type: SETUP_USER_ERROR,
