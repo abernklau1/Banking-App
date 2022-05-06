@@ -6,6 +6,7 @@ import {
   SETUP_USER_ERROR,
   LOGOUT_USER,
   TOGGLE_SIDEBAR,
+  TOGGLE_LOGOUT,
 } from "./actions";
 
 import { initialState } from "./appContext";
@@ -55,6 +56,10 @@ const reducer = (state, action) => {
       alertType: "danger",
       alertText: action.payload.alertText,
     };
+  }
+
+  if (action.type === TOGGLE_LOGOUT) {
+    return { ...state, showLogout: !state.showLogout };
   }
 
   if (action.type === LOGOUT_USER) {

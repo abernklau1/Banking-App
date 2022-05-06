@@ -1,5 +1,21 @@
 @import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300&family=JetBrains+Mono:wght@300&display=swap");
 
+:root {
+  --box-shadow-1: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  --box-shadow-2: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  --blue: #2932e2;
+  --purple: #9499f1;
+  --dark-purple: #7f84ee;
+  --light-purple: #d4d6f9;
+  --light-blue: #719ece;
+  --white-blue: #eaebfc;
+  --success-border: #61f3ac;
+  --success-bkg: #dffdee;
+  --danger-border: #f36161;
+  --danger-bkg: #fddfdf;
+  --footer-separator: 8rem;
+}
+
 html,
 body {
   min-height: 100vh;
@@ -22,6 +38,9 @@ a {
 h1,
 h2,
 h3,
+h4,
+h5,
+h6,
 a {
   font-family: "JetBrains Mono", monospace;
 }
@@ -37,16 +56,16 @@ span {
   margin: 1rem 0 0.5rem 0.8rem;
   width: 100px;
   height: 50px;
-  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  box-shadow: var(--box-shadow-2);
   border-radius: 10px;
-  border: 2px solid #9499f1;
-  background-color: #eaebfc;
+  border: 2px solid var(--purple);
+  background-color: var(--white-blue);
   font-weight: bold;
   cursor: pointer;
 }
 
 .content-container {
-  padding-bottom: 8rem;
+  padding-bottom: var(--footer-separator);
 }
 
 .logo-pages {
@@ -67,15 +86,15 @@ span {
   height: 2rem;
   border-radius: 5px;
   width: 100%;
-  border: 2px solid #9499f1;
-  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  border: 2px solid var(--purple);
+  box-shadow: var(--box-shadow-2);
   padding-left: 0.3rem;
 }
 
 .form-input:focus {
   outline: none !important;
-  border: 2px solid #2932e2;
-  box-shadow: 0 0 10px #719ece;
+  border: 2px solid var(--blue);
+  box-shadow: 0 0 10px var(--light-blue);
 }
 
 .form-row {
@@ -89,7 +108,7 @@ span {
 nav {
   display: flex;
   justify-content: space-between;
-  background-color: #2932e2;
+  background-color: var(--blue);
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   border-radius: 0 0 10px 10px;
 }
@@ -123,16 +142,17 @@ nav {
 }
 
 .log-btn {
-  height: 25px;
+  height: 30px;
   margin-right: 14px;
-  background-color: #d4d6f9;
+  background-color: var(--light-purple);
   padding: 0 10px 0;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0 0.5rem;
   position: relative;
-  color: #2932e2;
+  color: var(--blue);
+  border-radius: 5px;
 }
 
 .dropdown {
@@ -143,6 +163,7 @@ nav {
   width: 100%;
   align-items: center;
   justify-content: center;
+  transition: visibility 0.1s;
 }
 
 .show-dropdown {
@@ -151,17 +172,18 @@ nav {
 
 .dropdown-btn {
   width: 5.2rem;
-  border: 1px solid #7f84ee;
+  height: 25px;
+  border: 2px solid var(--dark-purple);
   border-radius: 5px;
   margin-top: 3px;
-  background-color: #d4d6f9;
-  font-weight: 600;
-  color: black;
+  background-color: var(--light-purple);
+  font-weight: bold;
+  color: var(--blue);
   cursor: pointer;
 }
 
 .dropdown-btn a {
-  color: black;
+  color: var(--blue);
 }
 
 .dash-link {
@@ -174,12 +196,12 @@ nav {
 
 .bars {
   display: none;
-  position: fixed;
+  position: relative;
   width: 50px;
   height: 50px;
   right: 20px;
   top: 30px;
-  background-color: #2932e2;
+  background-color: var(--blue);
   color: white;
   border: none;
   cursor: pointer;
@@ -189,17 +211,21 @@ nav {
   visibility: hidden;
   display: block;
   position: fixed;
-  top: 112px;
   right: -250px;
   width: 200px;
-  min-height: 100vh;
-  height: 100%;
+  min-height: 15.7rem;
   background-color: white;
   transition: 0.3s;
   padding: 0 10px;
-  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  box-shadow: var(--box-shadow-1);
   border-radius: 20px 0 0 20px;
-  border: 2px solid #2932e2;
+  border: 2px solid var(--blue);
+  border-right-style: none;
+  z-index: 1;
+}
+
+.user-active {
+  min-height: 18.5rem;
 }
 
 .visible {
@@ -220,9 +246,9 @@ nav {
   height: 20rem;
   margin: 0 2rem 4rem;
   text-align: left;
-  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  box-shadow: var(--box-shadow-2);
   border-radius: 20px;
-  border: 2px solid #2932e2;
+  border: 2px solid var(--blue);
   padding: 3px;
 }
 
@@ -247,23 +273,23 @@ nav {
 /* FOOTER */
 
 footer {
-  background-color: #2932e2;
+  background-color: var(--blue);
   position: absolute;
   bottom: 0;
   width: 100%;
   height: 6rem;
   text-align: center;
   border-radius: 10px 10px 0 0;
-  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  box-shadow: var(--box-shadow-1);
 }
 
 .footer-container {
   margin-top: 2rem;
-  color: #9499f1;
+  color: var(--purple);
 }
 
 .footer-container a {
-  color: #9499f1;
+  color: var(--purple);
   padding: 1rem;
 }
 
@@ -281,9 +307,9 @@ footer {
   margin: auto;
   margin-top: 3rem;
   max-width: 30rem;
-  border: 2px solid #9499f1;
+  border: 2px solid var(--purple);
   border-radius: 10px;
-  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  box-shadow: var(--box-shadow-1);
 }
 
 .register .logo-pages {
@@ -312,13 +338,13 @@ footer {
 }
 
 .alert-success {
-  border-color: #61f3ac;
-  background-color: #dffdee;
+  border-color: var(--success-border);
+  background-color: var(--success-bkg);
 }
 
 .alert-danger {
-  border-color: #f36161;
-  background-color: #fddfdf;
+  border-color: var(--danger-border);
+  background-color: var(--danger-bkg);
 }
 
 /* ERROR PAGE */
@@ -338,11 +364,41 @@ footer {
 }
 
 .error-link {
-  color: #719ece;
+  color: var(--light-blue);
 }
+
+/* About Page */
+
+.about {
+  padding-bottom: var(--footer-height);
+}
+.hero {
+  margin: 1rem auto;
+  max-width: 640px;
+}
+
+.hero img {
+  box-shadow: var(--box-shadow-1);
+  margin-bottom: 1rem;
+}
+
+.to-customer {
+  padding-top: 3rem;
+  text-align: left;
+  width: 500px;
+  margin: auto auto auto 17rem;
+}
+
+.to-customer img {
+  width: 26rem;
+  box-shadow: var(--box-shadow-1);
+}
+
 /* MEDIA QUERIES */
 
 @media (max-width: 890px) {
+  /* NAVBAR */
+
   .routing {
     top: 85px;
   }
@@ -359,28 +415,50 @@ footer {
     top: -1rem;
   }
 
-  .home-par {
-    top: 0;
-  }
   .nav-list-container {
     display: none;
   }
 
   .nav-list {
+    position: fixed;
     flex-wrap: wrap;
+    margin-top: 1rem;
     margin-left: 0;
     text-align: left;
+    width: 200px;
+  }
+
+  .nav-list-item {
+    width: 100%;
+    padding: 15px;
+    margin: 0;
+  }
+
+  .nav-list-item:hover {
+    background-color: var(--white-blue);
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    padding: 15px 10px;
+    box-shadow: var(--box-shadow-2);
   }
 
   .nav-link {
-    color: #2932e2;
-  }
-
-  .log-btn-container {
-    margin-left: 20px;
+    color: var(--blue);
   }
 
   .bars {
     display: inline;
+  }
+
+  /* HOME */
+
+  .home-par {
+    top: 0;
+  }
+
+  /* ABOUT */
+
+  .to-customer {
+    margin: auto auto auto 3rem;
   }
 }

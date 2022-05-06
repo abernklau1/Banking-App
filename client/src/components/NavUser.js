@@ -1,19 +1,14 @@
 import { useAppContext } from "../context/appContext";
 import { FaUserCircle, FaCaretDown } from "react-icons/fa";
-import { useState } from "react";
 
 const NavUser = () => {
-  const { user, logoutUser } = useAppContext();
+  const { user, logoutUser, toggleLogout, showLogout } = useAppContext();
 
-  const [showLogout, setShowLogout] = useState(false);
+  // const [showLogout, setShowLogout] = useState(false);
 
   return (
     <div className="log-btn-container">
-      <button
-        type="button"
-        className="btn log-btn"
-        onClick={() => setShowLogout(!showLogout)}
-      >
+      <button type="button" className="btn log-btn" onClick={toggleLogout}>
         <FaUserCircle />
         {user?.name}
         <FaCaretDown />

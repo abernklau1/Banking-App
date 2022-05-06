@@ -2,7 +2,8 @@
 export const DISPLAY_ALERT = "DISPLAY_ALERT";
 export const CLEAR_ALERT = "CLEAR_ALERT";
 
-// action to logout user
+// action to show logout and to logout user
+export const TOGGLE_LOGOUT = "TOGGLE_LOGOUT";
 export const LOGOUT_USER = "LOGOUT_USER";
 
 // actions to set user account up when logging in

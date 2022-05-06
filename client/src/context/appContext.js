@@ -7,6 +7,7 @@ import {
   SETUP_USER_ERROR,
   LOGOUT_USER,
   TOGGLE_SIDEBAR,
+  TOGGLE_LOGOUT,
 } from "./actions";
 import reducer from "./reducer";
 import axios from "axios";
@@ -25,6 +26,7 @@ const initialState = {
   token: token,
   userLocation: userLocation || "",
   isSignedIn: signedIn || false,
+  showLogout: false,
   showSidebar: false,
 };
 
@@ -80,6 +82,10 @@ const AppProvider = ({ children }) => {
     clearAlert();
   };
 
+  const toggleLogout = () => {
+    dispatch({ type: TOGGLE_LOGOUT });
+  };
+
   const logoutUser = () => {
     dispatch({ type: LOGOUT_USER });
     removeUserFromLocalStorage();
@@ -115,7 +121,14 @@ const AppProvider = ({ children }) => {
 
   return (
     <AppContext.Provider
-      value={{ ...state, displayAlert, setupUser, logoutUser, toggleSidebar }}
+      value={{
+        ...state,
+        displayAlert,
+        setupUser,
+        toggleLogout,
+        logoutUser,
+        toggleSidebar,
+      }}
     >
       {children}
     </AppContext.Provider>
