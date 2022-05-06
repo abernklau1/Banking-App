@@ -37,6 +37,17 @@ const UserSchema = new mongoose.Schema({
     trim: true,
     default: "",
   },
+  accNumber: {
+    type: String,
+    length: 7,
+    default: "0000000",
+    required: [true, "Please provide account number"],
+  },
+  accBalance: {
+    type: Number,
+    maxlength: 8,
+    default: 0,
+  },
 });
 
 UserSchema.pre("save", async function () {
