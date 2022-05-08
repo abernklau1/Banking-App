@@ -4,24 +4,25 @@ import { BadRequestError, NotFoundError } from "../errors/index.js";
 
 const createAccount = async (req, res) => {
   const accNumbers = await Account.find();
-  let accountNumber = Math.floor(Math.random * 100000) + 200000;
+  let accountNumber = Math.floor(Math.random() * 100000) + 200000;
   for (let i = 0; i < accNumbers.length; i++) {
     if (accountNumber === accNumbers[i]) {
-      accountNumber = Math.floor(Math.random * 100000) + 200000;
+      accountNumber = Math.floor(Math.random() * 100000) + 200000;
       i = -1;
       continue;
     }
   }
   const savings = Math.floor(Math.random() * 1000001);
-  const checking = Math.floor(Math.random * (1000001 - savings));
-  const balance = savings + checking;
+  const checking = Math.floor(Math.random() * (1000001 - savings));
+  console.log(savings, checking);
+  const totalBalance = savings + checking;
 
   const account = await Account.create({
     accNumber: accountNumber,
-    balance: balance,
+    totalBalance: totalBalance,
     savings: savings,
     checking: checking,
-    createBy: req.user.userId,
+    createdBy: req.user.userId,
   });
 
   res.status(StatusCodes.CREATED).json({ account });
@@ -35,8 +36,8 @@ const getBalances = async (req, res) => {
     throw new NotFoundError(`No account associated with user: ${userId}`);
   }
 
-  balances = {
-    balance: account.balance,
+  const balances = {
+    totalBalance: account.totalBalance,
     savings: account.savings,
     checking: account.checking,
   };
