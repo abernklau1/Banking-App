@@ -37,23 +37,12 @@ const UserSchema = new mongoose.Schema({
     trim: true,
     default: "",
   },
-  accNumber: {
-    type: String,
-    length: 7,
-    default: "0000000",
-    required: [true, "Please provide account number"],
-  },
-  accBalance: {
-    type: Number,
-    maxlength: 8,
-    default: 0,
-  },
 });
 
 UserSchema.pre("save", async function () {
-  if (!this.isModified("password")) return;
-  const salt = await bcrypt.genSalt(10);
-  this.password = await bcrypt.hash(this.password, salt);
+  if (!this.isModified("password") || !this.isModified("accNumber")) return;
+  const passSalt = await bcrypt.genSalt(10);
+  this.password = await bcrypt.hash(this.password, passSalt);
 });
 
 UserSchema.methods.createJWT = function () {
