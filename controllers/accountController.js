@@ -1,4 +1,4 @@
-import Account from "../schemas/Account";
+import Account from "../schemas/Account.js";
 import { StatusCodes } from "http-status-codes";
 import { BadRequestError, NotFoundError } from "../errors/index.js";
 
