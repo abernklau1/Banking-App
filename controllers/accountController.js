@@ -35,9 +35,11 @@ const createAccount = async (req, res) => {
 };
 
 const getBalances = async (req, res) => {
+  // find account created by said user
   const userId = req.user.userId;
   const account = await Account.findOne({ userId });
 
+  // throw not found error if that is the case
   if (!account) {
     throw new NotFoundError(`No account associated with user: ${userId}`);
   }
@@ -51,28 +53,41 @@ const getBalances = async (req, res) => {
 };
 
 const transferMoney = async (req, res) => {
+  // pull value from user input
   const { toAccount, amount } = req.body;
-  const userId = req.user.userId;
-  const account = await Account.findOne({ userId });
 
+  // if no value throw new bad request error
   if (!toAccount) {
     throw new BadRequestError("Please provide the transfer account");
   }
 
+  // check for account associate with user
+  const userId = req.user.userId;
+  const account = await Account.findOne({ userId });
+
+  // if no account throw not found error
   if (!account) {
     throw new NotFoundError("Invalid Account");
   }
 
+  const savings = account.savings;
+  const checking = account.checking;
+  let newSavings;
+  let newChecking;
+
+  // check which account user requested transfer to
   if (toAccount === "Savings") {
-    savings = account.savings;
-    checking = account.checking;
-    const newSavings = savings + amount;
-    const newChecking = checking - amount;
+    newSavings = savings + amount;
+    newChecking = checking - amount;
+
+    // check if requested transfer amount will exceed max bank account amount
     if (newSavings > 1000000) {
       throw new BadRequestError(
         "Adding this amount would exceed the max amount"
       );
     }
+
+    // check if requested transfer amount will cause account to go negative
     if (newChecking < 0) {
       throw new BadRequestError(
         "Transferring this amount would set account negative"
@@ -80,16 +95,19 @@ const transferMoney = async (req, res) => {
     }
   }
 
+  // '''
   if (toAccount === "Checking") {
-    savings = account.savings;
-    checking = account.checking;
-    const newSavings = savings - amount;
-    const newChecking = checking + amount;
+    newSavings = savings - amount;
+    newChecking = checking + amount;
+
+    // '''
     if (newChecking > 1000000) {
       throw new BadRequestError(
         "Adding this amount would exceed the max amount"
       );
     }
+
+    // '''
     if (newSavings < 5) {
       throw new BadRequestError(
         "Transferring this amount would set account negative"
