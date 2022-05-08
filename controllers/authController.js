@@ -3,10 +3,10 @@ import { StatusCodes } from "http-status-codes";
 import { BadRequestError, UnAuthenticatedError } from "../errors/index.js";
 
 const register = async (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, lastName, email, password } = req.body;
   // check for missing fields
   if (!name || !email || !password) {
-    throw new BadRequestError("Please provide all values");
+    throw new BadRequestError("Please provide starred values");
   }
 
   // check if email is already in use
@@ -15,8 +15,29 @@ const register = async (req, res) => {
     throw new BadRequestError("Email already in use");
   }
 
+  // search for account numbers
+  const accNumbers = await User.find().select("accNumber");
+
+  // generate account numbers between 200k & 300k
+  let accNumber = Math.floor(Math.random() * 100000) + 200000;
+
+  // generate unique account numbers
+  for (let i = 0; i < accNumbers.length; i++) {
+    if (accNumber === accNumbers[i]) {
+      accNumber = Math.floor(Math.random() * 100000) + 200000;
+      i = -1;
+      continue;
+    }
+  }
+
   //send request to create new user if errors have been avoided
-  const user = await User.create({ name, email, password });
+  const user = await User.create({
+    name,
+    lastName,
+    email,
+    password,
+    accNumber,
+  });
   const token = user.createJWT();
   res.status(StatusCodes.CREATED).json({
     user: {
@@ -27,6 +48,7 @@ const register = async (req, res) => {
     },
     token,
     location: user.location,
+    accNumber: user.accNumber,
   });
 };
 
@@ -39,7 +61,7 @@ const login = async (req, res) => {
   // check for user with input email
   const user = await User.findOne({ email }).select("+password");
   if (!user) {
-    throw new UnAuthenticatedError("Invalid Credentials");
+    throw new UnAuthenticatedError("User Not Found");
   }
 
   // check for correct password

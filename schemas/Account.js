@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
 
 const AccountSchema = new mongoose.Schema({
-  accNumber: { type: String, length: 7 },
   totalBalance: {
     type: Number,
     maxlength: 16,

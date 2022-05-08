@@ -17,7 +17,7 @@ const reducer = (state, action) => {
       ...state,
       showAlert: true,
       alertType: "danger",
-      alertText: "Please provide all values",
+      alertText: "Please provide starred values",
     };
   }
   if (action.type === CLEAR_ALERT) {
@@ -40,8 +40,8 @@ const reducer = (state, action) => {
       isLoading: false,
       token: action.payload.token,
       user: action.payload.user,
+      accNumber: action.payload.user.accNumber,
       userLocation: action.payload.location,
-      jobLocation: action.payload.location,
       showAlert: true,
       alertType: "success",
       alertText: action.payload.alertText,

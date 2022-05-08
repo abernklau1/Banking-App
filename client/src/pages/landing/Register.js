@@ -5,6 +5,7 @@ import { useAppContext } from "../../context/appContext";
 
 const initialState = {
   name: "",
+  lastName: "",
   email: "",
   password: "",
   isMember: true,
@@ -32,12 +33,12 @@ const Register = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const { name, email, password, isMember } = values;
+    const { name, lastName, email, password, isMember } = values;
     if (!email || !password || (!isMember && !name)) {
       displayAlert();
       return;
     }
-    const currentUser = { name, email, password };
+    const currentUser = { name, lastName, email, password };
     if (isMember) {
       setupUser({
         currentUser,
@@ -69,24 +70,36 @@ const Register = () => {
           <h3>{values.isMember ? "Login" : "Register"}</h3>
           {showAlert && <Alert />}
           {!values.isMember && (
-            <FormInput
-              type="text"
-              name="name"
-              value={values.name}
-              handleChange={handleChange}
-            />
+            <div>
+              <FormInput
+                type="text"
+                name="name"
+                value={values.name}
+                handleChange={handleChange}
+                isStarred={true}
+              />
+              <FormInput
+                type="text"
+                labelText="Last Name"
+                name="lastName"
+                value={values.lastName}
+                handleChange={handleChange}
+              />
+            </div>
           )}
           <FormInput
             type="email"
             name="email"
             value={values.email}
             handleChange={handleChange}
+            isStarred={true}
           />
           <FormInput
             type="password"
             name="password"
             value={values.password}
             handleChange={handleChange}
+            isStarred={true}
           />
 
           <button type="submit" className="btn" disabled={isLoading}>

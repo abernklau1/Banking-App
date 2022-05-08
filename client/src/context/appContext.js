@@ -28,6 +28,8 @@ const initialState = {
   isSignedIn: signedIn || false,
   showLogout: false,
   showSidebar: false,
+  routingNumber: "#00000000",
+  accNumber: "",
 };
 
 const AppContext = createContext();
@@ -67,10 +69,17 @@ const AppProvider = ({ children }) => {
         `/api/v1/auth/${endPoint}`,
         currentUser
       );
+      console.log(data);
       const { user, token, location } = data;
       dispatch({
         type: SETUP_USER_SUCCESS,
-        payload: { user, token, location, alertText, isSignedIn: true },
+        payload: {
+          user,
+          token,
+          location,
+          alertText,
+          isSignedIn: true,
+        },
       });
       addUserToLocalStorage({ user, token, location, isSignedIn: true });
     } catch (error) {

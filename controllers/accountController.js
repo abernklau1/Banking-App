@@ -3,28 +3,12 @@ import { StatusCodes } from "http-status-codes";
 import { BadRequestError, NotFoundError } from "../errors/index.js";
 
 const createAccount = async (req, res) => {
-  // find account numbers to authenticate uniqueness
-  const accNumbers = await Account.find();
-
-  // generate account numbers between 200k & 300k
-  let accountNumber = Math.floor(Math.random() * 100000) + 200000;
-
-  // generate unique account numbers
-  for (let i = 0; i < accNumbers.length; i++) {
-    if (accountNumber === accNumbers[i]) {
-      accountNumber = Math.floor(Math.random() * 100000) + 200000;
-      i = -1;
-      continue;
-    }
-  }
-
   // generate random balances with consideration to max of 1 million
   const savings = Math.floor(Math.random() * 1000001);
   const checking = Math.floor(Math.random() * (1000001 - savings));
   const totalBalance = savings + checking;
 
   const account = await Account.create({
-    accNumber: accountNumber,
     totalBalance: totalBalance,
     savings: savings,
     checking: checking,

@@ -14,9 +14,9 @@ const NavUser = () => {
         <FaCaretDown />
       </button>
       <div className={showLogout ? "dropdown show-dropdown" : "dropdown"}>
-        <button className="dropdown-btn dash-link">
-          <a href="/dashboard">Dashboard</a>
-        </button>
+        <a href="/dashboard">
+          <button className="dropdown-btn dash-link">Dashboard</button>
+        </a>
         <button
           type="button"
           className="dropdown-btn"

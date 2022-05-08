@@ -37,10 +37,14 @@ const UserSchema = new mongoose.Schema({
     trim: true,
     default: "",
   },
+  accNumber: {
+    type: String,
+    length: 7,
+  },
 });
 
 UserSchema.pre("save", async function () {
-  if (!this.isModified("password") || !this.isModified("accNumber")) return;
+  if (!this.isModified("password")) return;
   const passSalt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, passSalt);
 });

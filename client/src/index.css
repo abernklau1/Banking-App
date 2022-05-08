@@ -41,7 +41,8 @@ h3,
 h4,
 h5,
 h6,
-a {
+a,
+li {
   font-family: "JetBrains Mono", monospace;
 }
 
@@ -144,14 +145,14 @@ nav {
 .log-btn {
   height: 30px;
   margin-right: 14px;
-  background-color: var(--light-purple);
+  background-color: var(--white-blue);
   padding: 0 10px 0;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0 0.5rem;
   position: relative;
-  color: var(--blue);
+  color: black;
   border-radius: 5px;
 }
 
@@ -164,6 +165,7 @@ nav {
   align-items: center;
   justify-content: center;
   transition: visibility 0.1s;
+  font-family: "JetBrains Mono", monospace;
 }
 
 .show-dropdown {
@@ -176,14 +178,16 @@ nav {
   border: 2px solid var(--dark-purple);
   border-radius: 5px;
   margin-top: 3px;
-  background-color: var(--light-purple);
+  background-color: var(--white-blue);
   font-weight: bold;
-  color: var(--blue);
+  font-size: 12px;
+  color: black;
   cursor: pointer;
 }
 
 .dropdown-btn a {
-  color: var(--blue);
+  font-size: 12px;
+  color: black;
 }
 
 .dash-link {
@@ -226,11 +230,6 @@ nav {
 
 .user-active {
   min-height: 18.5rem;
-}
-
-.visible {
-  visibility: visible;
-  right: 0;
 }
 
 /* HOME */
@@ -324,6 +323,27 @@ footer {
   cursor: pointer;
 }
 
+.starred {
+  color: red;
+}
+
+/* DASHBOARD */
+
+.dash-list {
+  display: flex;
+  width: 75%;
+  margin: auto;
+  list-style: none;
+}
+
+.dash-items {
+  width: 300px;
+}
+
+.dash-vars {
+  display: inline-block;
+}
+
 /* ALERTS */
 
 .alert {
@@ -399,6 +419,11 @@ footer {
 @media (max-width: 890px) {
   /* NAVBAR */
 
+  .visible {
+    visibility: visible;
+    right: 0;
+  }
+
   .routing {
     top: 85px;
   }
@@ -449,6 +474,8 @@ footer {
   }
 
   .nav-link {
+    display: block;
+    width: 100%;
     color: var(--blue);
   }
 
@@ -466,5 +493,11 @@ footer {
 
   .to-customer {
     margin: auto auto auto 3rem;
+  }
+
+  /* DASHBOARD */
+  .dash-list {
+    text-align: left;
+    font-size: 0.8rem;
   }
 }
