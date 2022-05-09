@@ -3,17 +3,24 @@
 :root {
   --box-shadow-1: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   --box-shadow-2: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  --box-shadow-3: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  --box-shadow-4: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+    rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
   --blue: #2932e2;
   --purple: #9499f1;
   --dark-purple: #7f84ee;
   --light-purple: #d4d6f9;
   --light-blue: #719ece;
   --white-blue: #eaebfc;
+  --light-gray: #dddddd;
+  --light-gray-2: #f3f3f3;
   --success-border: #61f3ac;
   --success-bkg: #dffdee;
   --danger-border: #f36161;
   --danger-bkg: #fddfdf;
   --footer-separator: 8rem;
+  --header-font: "JetBrains Mono", monospace;
+  --body-font: "IBM Plex Sans", sans-serif;
 }
 
 html,
@@ -43,14 +50,14 @@ h5,
 h6,
 a,
 li {
-  font-family: "JetBrains Mono", monospace;
+  font-family: var(--header-font);
 }
 
 p,
 button,
 label,
 span {
-  font-family: "IBM Plex Sans", sans-serif;
+  font-family: var(--body-font);
 }
 
 .btn {
@@ -165,7 +172,7 @@ nav {
   align-items: center;
   justify-content: center;
   transition: visibility 0.1s;
-  font-family: "JetBrains Mono", monospace;
+  font-family: var(--header-font);
 }
 
 .show-dropdown {
@@ -332,16 +339,72 @@ footer {
 .dash-list {
   display: flex;
   width: 75%;
-  margin: auto;
+  margin: 35px auto 25px;
   list-style: none;
 }
 
 .dash-items {
-  width: 300px;
+  width: 350px;
+  border: 2px solid var(--blue);
+  border-radius: 5px;
+  padding: 5px 3px;
+  margin: 0 5px;
+  font-weight: 800;
+  box-shadow: var(--box-shadow-3);
 }
 
 .dash-vars {
   display: inline-block;
+  font-weight: 500;
+}
+
+/* ACCOUNT */
+
+.account-container {
+  width: 800px;
+  text-align: left;
+  margin: auto;
+}
+
+.account-container h2 {
+  margin-bottom: 15px;
+}
+
+table {
+  width: 100%;
+  box-shadow: var(--box-shadow-4);
+  border-collapse: collapse;
+  border-radius: 5px 5px 0 0;
+  overflow: hidden;
+}
+
+table thead tr {
+  background-color: var(--blue);
+  color: white;
+  font-family: var(--header-font);
+}
+
+table th,
+table td {
+  padding: 12px 15px;
+  text-align: left;
+}
+
+table tbody tr {
+  border-bottom: 1px solid var(--light-gray);
+  font-family: var(--body-font);
+}
+
+table tbody tr:nth-of-type(even) {
+  background-color: var(--light-gray-2);
+}
+
+table tbody tr:last-of-type {
+  border-bottom: 2px solid var(--blue);
+}
+
+.balance {
+  text-align: right;
 }
 
 /* ALERTS */
@@ -499,5 +562,10 @@ footer {
   .dash-list {
     text-align: left;
     font-size: 0.8rem;
+  }
+
+  /* ACCOUNT */
+  .account-container {
+    width: 600px;
   }
 }

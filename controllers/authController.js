@@ -30,6 +30,11 @@ const register = async (req, res) => {
     }
   }
 
+  // generate random balances with consideration to max of 1 million
+  const savings = Math.floor(Math.random() * 1000001 * 100) / 100;
+  const checking = Math.floor(Math.random() * (1000001 - savings) * 100) / 100;
+  const totalBalance = savings + checking;
+
   //send request to create new user if errors have been avoided
   const user = await User.create({
     name,
@@ -37,7 +42,11 @@ const register = async (req, res) => {
     email,
     password,
     accNumber,
+    savings,
+    checking,
+    totalBalance,
   });
+
   const token = user.createJWT();
   res.status(StatusCodes.CREATED).json({
     user: {
@@ -48,7 +57,12 @@ const register = async (req, res) => {
     },
     token,
     location: user.location,
-    accNumber: user.accNumber,
+    acc: {
+      accNumber: user.accNumber,
+      savings: user.savings,
+      checking: user.checking,
+      totalBalance: user.totalBalance,
+    },
   });
 };
 

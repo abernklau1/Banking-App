@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Error, ProtectedRoute } from "./pages";
 import { About, Support, Register, SharedLayout, Home } from "./pages/landing";
-import { Dashboard, Transfer, Account } from "./pages/account";
+import { Dashboard, Transfer, Accounts } from "./pages/account";
 const App = () => {
   return (
     <BrowserRouter>
@@ -19,7 +19,7 @@ const App = () => {
               </ProtectedRoute>
             }
           >
-            <Route index element={<Account />} />
+            <Route index element={<Accounts />} />
             <Route path="/dashboard/transfer" element={<Transfer />} />
           </Route>
         </Route>

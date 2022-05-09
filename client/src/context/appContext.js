@@ -17,19 +17,24 @@ const token = localStorage.getItem("token");
 const userLocation = localStorage.getItem("location");
 const signedIn = localStorage.getItem("signedIn");
 
+const userParsed = user ? JSON.parse(user) : null;
+
 const initialState = {
   isLoading: false,
   showAlert: false,
   alertType: "",
   alertText: "",
-  user: user ? JSON.parse(user) : null,
+  user: userParsed,
   token: token,
   userLocation: userLocation || "",
   isSignedIn: signedIn || false,
   showLogout: false,
   showSidebar: false,
   routingNumber: "#00000000",
-  accNumber: "",
+  accNumber: userParsed.accNumber || "",
+  savings: userParsed.savings || 0,
+  checking: userParsed.checking || 0,
+  totalBalance: userParsed.totalBalance || 0,
 };
 
 const AppContext = createContext();
@@ -69,8 +74,8 @@ const AppProvider = ({ children }) => {
         `/api/v1/auth/${endPoint}`,
         currentUser
       );
-      console.log(data);
       const { user, token, location } = data;
+      console.log(user);
       dispatch({
         type: SETUP_USER_SUCCESS,
         payload: {

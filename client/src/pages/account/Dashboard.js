@@ -3,7 +3,8 @@ import { useAppContext } from "../../context/appContext";
 
 const Dashboard = () => {
   const {
-    user: { name, email, location, lastName, accNumber },
+    user: { name, email, location, lastName },
+    accNumber,
     routingNumber,
   } = useAppContext();
   return (
@@ -11,7 +12,7 @@ const Dashboard = () => {
       <header className="dash">
         <ul className="dash-list">
           <li className="dash-items">
-            Welcome:{" "}
+            Welcome:
             <span className="dash-vars">
               {name} {lastName}
             </span>
@@ -26,7 +27,10 @@ const Dashboard = () => {
             Email: <span className="dash-vars">{email}</span>
           </li>
           <li className="dash-items">
-            Location: <span className="dash-vars">{location}</span>
+            Location:
+            <span className="dash-vars">
+              {location ? location : "UNSPECIFIED"}
+            </span>
           </li>
         </ul>
       </header>

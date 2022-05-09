@@ -1,27 +1,11 @@
-import Account from "../schemas/Account.js";
+import User from "../schemas/User.js";
 import { StatusCodes } from "http-status-codes";
 import { BadRequestError, NotFoundError } from "../errors/index.js";
-
-const createAccount = async (req, res) => {
-  // generate random balances with consideration to max of 1 million
-  const savings = Math.floor(Math.random() * 1000001);
-  const checking = Math.floor(Math.random() * (1000001 - savings));
-  const totalBalance = savings + checking;
-
-  const account = await Account.create({
-    totalBalance: totalBalance,
-    savings: savings,
-    checking: checking,
-    createdBy: req.user.userId,
-  });
-
-  res.status(StatusCodes.CREATED).json({ account });
-};
 
 const getBalances = async (req, res) => {
   // find account created by said user
   const userId = req.user.userId;
-  const account = await Account.findOne({ userId });
+  const account = await User.findOne({ userId });
 
   // throw not found error if that is the case
   if (!account) {
@@ -47,7 +31,7 @@ const transferMoney = async (req, res) => {
 
   // check for account associate with user
   const userId = req.user.userId;
-  const account = await Account.findOne({ userId });
+  const account = await User.findOne({ userId });
 
   // if no account throw not found error
   if (!account) {
@@ -99,7 +83,7 @@ const transferMoney = async (req, res) => {
     }
   }
 
-  const updateAccount = await Account.findOneAndUpdate(
+  const updateAccount = await User.findOneAndUpdate(
     { userId },
     { savings: newSavings, checking: newChecking },
     { new: true, runValidators: true }
@@ -107,4 +91,4 @@ const transferMoney = async (req, res) => {
   res.status(StatusCodes.OK).json({ updateAccount });
 };
 
-export { createAccount, getBalances, transferMoney };
+export { getBalances, transferMoney };

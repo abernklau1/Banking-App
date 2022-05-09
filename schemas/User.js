@@ -41,6 +41,18 @@ const UserSchema = new mongoose.Schema({
     type: String,
     length: 7,
   },
+  savings: {
+    type: Number,
+    maxlength: 8,
+  },
+  checking: {
+    type: Number,
+    maxlength: 8,
+  },
+  totalBalance: {
+    type: Number,
+    maxlength: 16,
+  },
 });
 
 UserSchema.pre("save", async function () {
