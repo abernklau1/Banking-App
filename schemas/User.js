@@ -57,8 +57,8 @@ const UserSchema = new mongoose.Schema({
 
 UserSchema.pre("save", async function () {
   if (!this.isModified("password")) return;
-  const passSalt = await bcrypt.genSalt(10);
-  this.password = await bcrypt.hash(this.password, passSalt);
+  const Salt = await bcrypt.genSalt(10);
+  this.password = await bcrypt.hash(this.password, Salt);
 });
 
 UserSchema.methods.createJWT = function () {

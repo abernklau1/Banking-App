@@ -7,6 +7,9 @@ import {
   LOGOUT_USER,
   TOGGLE_SIDEBAR,
   TOGGLE_LOGOUT,
+  SETUP_ACCOUNT_SUCCESS,
+  SETUP_ACCOUNT_ERROR,
+  SETUP_ACCOUNT_BEGIN,
 } from "./actions";
 
 import { initialState } from "./appContext";
@@ -40,10 +43,6 @@ const reducer = (state, action) => {
       isLoading: false,
       token: action.payload.token,
       user: action.payload.user,
-      accNumber: action.payload.user.accNumber,
-      savings: action.payload.user.savings,
-      checking: action.payload.user.checking,
-      totalBalance: action.payload.user.totalBalance,
       userLocation: action.payload.location,
       showAlert: true,
       alertType: "success",
@@ -79,6 +78,33 @@ const reducer = (state, action) => {
     return { ...state, showSidebar: !state.showSidebar };
   }
 
+  if (action.type === SETUP_ACCOUNT_BEGIN) {
+    return {
+      ...state,
+      isLoading: true,
+    };
+  }
+
+  if (action.type === SETUP_ACCOUNT_SUCCESS) {
+    return {
+      ...state,
+      isLoading: false,
+      accNumber: action.payload.accNumber,
+      savings: action.payload.savings,
+      checking: action.payload.checking,
+      totalBalance: action.payload.totalBalance,
+    };
+  }
+
+  if (action.type === SETUP_ACCOUNT_ERROR) {
+    return {
+      ...state,
+      isLoading: false,
+      showAlert: true,
+      alertType: "danger",
+      alertText: action.payload.msg,
+    };
+  }
   throw new Error(`no such action: ${action.type}`);
 };
 

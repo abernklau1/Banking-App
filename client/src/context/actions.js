@@ -13,3 +13,8 @@ export const SETUP_USER_ERROR = "SETUP_USER_ERROR";
 
 // action to toggle sidebar
 export const TOGGLE_SIDEBAR = "TOGGLE_SIDEBAR";
+
+// actions to create an account
+export const SETUP_ACCOUNT_BEGIN = "SETUP_ACCOUNT_BEGIN";
+export const SETUP_ACCOUNT_SUCCESS = "SETUP_ACCOUNT_SUCCESS";
+export const SETUP_ACCOUNT_ERROR = "SETUP_ACCOUNT_ERROR";

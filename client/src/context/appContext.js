@@ -8,6 +8,9 @@ import {
   LOGOUT_USER,
   TOGGLE_SIDEBAR,
   TOGGLE_LOGOUT,
+  SETUP_ACCOUNT_SUCCESS,
+  SETUP_ACCOUNT_ERROR,
+  SETUP_ACCOUNT_BEGIN,
 } from "./actions";
 import reducer from "./reducer";
 import axios from "axios";
@@ -17,30 +20,52 @@ const token = localStorage.getItem("token");
 const userLocation = localStorage.getItem("location");
 const signedIn = localStorage.getItem("signedIn");
 
-const userParsed = user ? JSON.parse(user) : null;
-
 const initialState = {
   isLoading: false,
   showAlert: false,
   alertType: "",
   alertText: "",
-  user: userParsed,
+  user: user ? JSON.parse(user) : null,
   token: token,
   userLocation: userLocation || "",
   isSignedIn: signedIn || false,
   showLogout: false,
   showSidebar: false,
   routingNumber: "#00000000",
-  accNumber: userParsed.accNumber || "",
-  savings: userParsed.savings || 0,
-  checking: userParsed.checking || 0,
-  totalBalance: userParsed.totalBalance || 0,
+  accNumber: "",
+  savings: 0,
+  checking: 0,
+  totalBalance: 0,
 };
 
 const AppContext = createContext();
 
 const AppProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
+
+  const authFetch = axios.create({ baseURL: "/api/v1" });
+
+  authFetch.interceptors.request.use(
+    (config) => {
+      config.headers.common["authorization"] = `Bearer ${state.token}`;
+      return config;
+    },
+    (error) => {
+      return Promise.reject(error);
+    }
+  );
+
+  authFetch.interceptors.response.use(
+    (response) => {
+      return response;
+    },
+    (error) => {
+      if (error.response.status === 401) {
+        logoutUser();
+      }
+      return Promise.reject(error);
+    }
+  );
 
   const displayAlert = () => {
     dispatch({ type: DISPLAY_ALERT });
@@ -75,7 +100,6 @@ const AppProvider = ({ children }) => {
         currentUser
       );
       const { user, token, location } = data;
-      console.log(user);
       dispatch({
         type: SETUP_USER_SUCCESS,
         payload: {
@@ -87,6 +111,10 @@ const AppProvider = ({ children }) => {
         },
       });
       addUserToLocalStorage({ user, token, location, isSignedIn: true });
+      console.log(state.token);
+      if (endPoint === "register") {
+        dispatch({ type: SETUP_ACCOUNT_BEGIN });
+      }
     } catch (error) {
       dispatch({
         type: SETUP_USER_ERROR,
@@ -109,30 +137,20 @@ const AppProvider = ({ children }) => {
     dispatch({ type: TOGGLE_SIDEBAR });
   };
 
-  const authFetch = axios.create({ baseURL: "/api/v1" });
-
-  authFetch.interceptors.request.use(
-    (config) => {
-      config.headers.common["authorization"] = `Bearer ${state.token}`;
-      return config;
-    },
-    (error) => {
-      return Promise.reject(error);
+  const createAccount = async () => {
+    dispatch({ type: SETUP_ACCOUNT_BEGIN });
+    try {
+      const { data } = await authFetch.post(`/user-account`);
+      console.log(data);
+      dispatch({ type: SETUP_ACCOUNT_SUCCESS });
+    } catch (error) {
+      if (error.status === 401) return;
+      dispatch({
+        type: SETUP_ACCOUNT_ERROR,
+        payload: { msg: error.response.data.msg },
+      });
     }
-  );
-
-  authFetch.interceptors.response.use(
-    (response) => {
-      return response;
-    },
-    (error) => {
-      if (error.response.status === 401) {
-        logoutUser();
-      }
-      return Promise.reject(error);
-    }
-  );
-
+  };
   return (
     <AppContext.Provider
       value={{

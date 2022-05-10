@@ -1,6 +1,38 @@
-import User from "../schemas/User.js";
+import Account from "../schemas/Account.js";
 import { StatusCodes } from "http-status-codes";
 import { BadRequestError, NotFoundError } from "../errors/index.js";
+
+const createAccount = async (req, res) => {
+  // search for account numbers
+  const accNumbers = await Account.find().select("accNumber");
+
+  // generate account numbers between 200k & 300k
+  let accNumber = Math.floor(Math.random() * 100000) + 200000;
+
+  // generate unique account numbers
+  for (let i = 0; i < accNumbers.length; i++) {
+    if (accNumber === accNumbers[i]) {
+      accNumber = Math.floor(Math.random() * 100000) + 200000;
+      i = -1;
+      continue;
+    }
+  }
+
+  // generate random balances with consideration to max of 1 million
+  const savings = Math.floor(Math.random() * 1000001 * 100) / 100;
+  const checking = Math.floor(Math.random() * (1000001 - savings) * 100) / 100;
+  const totalBalance = savings + checking;
+
+  const account = await Account.create({
+    accNumber,
+    savings,
+    checking,
+    totalBalance,
+    createdBy: req.user.userId,
+  });
+
+  res.status(StatusCodes.CREATED).json({ account });
+};
 
 const getBalances = async (req, res) => {
   // find account created by said user
@@ -91,4 +123,4 @@ const transferMoney = async (req, res) => {
   res.status(StatusCodes.OK).json({ updateAccount });
 };
 
-export { getBalances, transferMoney };
+export { createAccount, getBalances, transferMoney };

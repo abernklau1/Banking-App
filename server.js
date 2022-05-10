@@ -31,7 +31,7 @@ app.get("/api/v1", (req, res) => {
 });
 
 app.use("/api/v1/auth", authRouter);
-app.use("/api/v1/user-account", accRouter);
+app.use("/api/v1/user-account", auth, accRouter);
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
