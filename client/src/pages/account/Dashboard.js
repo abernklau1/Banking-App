@@ -10,6 +10,16 @@ const Dashboard = () => {
   return (
     <section>
       <header className="dash">
+        <nav className="dash-nav">
+          <ul className="dash-nav-list">
+            <li className="dash-nav-items">
+              <a href="/dashboard">Accounts</a>
+            </li>
+            <li className="dash-nav-items">
+              <a href="/dashboard/transfer">Transfer</a>
+            </li>
+          </ul>
+        </nav>
         <ul className="dash-list">
           <li className="dash-items">
             Welcome:

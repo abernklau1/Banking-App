@@ -123,7 +123,7 @@ span {
 
 /* NAVBAR */
 
-nav {
+.shared-nav {
   display: flex;
   justify-content: space-between;
   background-color: var(--blue);
@@ -350,10 +350,43 @@ footer {
 
 /* DASHBOARD */
 
+.dash-nav-list {
+  display: flex;
+  justify-content: space-around;
+  margin: auto;
+  width: 500px;
+}
+
+.dash-nav-items {
+  display: inline;
+  margin: 20px 30px 0;
+  width: 150px;
+}
+
+.dash-nav-items a {
+  color: black;
+  display: block;
+  width: 100%;
+  height: 100%;
+  margin: 5px auto;
+  padding: auto;
+  border-radius: 10px;
+  box-shadow: var(--box-shadow-3);
+  height: 25px;
+  line-height: 1.4;
+  border: 1px solid var(--blue);
+}
+
+.dash-nav-items a:hover {
+  /* color: white;
+  background-color: var(--blue); */
+  box-shadow: var(--box-shadow-1);
+}
+
 .dash-list {
   display: flex;
   width: 75%;
-  margin: 35px auto 25px;
+  margin: 25px auto 25px;
   list-style: none;
 }
 

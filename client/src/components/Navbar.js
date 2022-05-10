@@ -6,7 +6,7 @@ const Navbar = () => {
   const { toggleSidebar, routingNumber } = useAppContext();
 
   return (
-    <nav>
+    <nav className="shared-nav">
       <div>
         <a href="/">
           <img className="logo" src="/logo.png" alt="Logo" />
