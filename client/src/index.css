@@ -81,6 +81,16 @@ span {
   display: block;
   width: 300px;
   height: 125px;
+  margin: auto;
+}
+
+.form-outline {
+  margin: auto;
+  margin-top: 3rem;
+  max-width: 30rem;
+  border: 2px solid var(--purple);
+  border-radius: 10px;
+  box-shadow: var(--box-shadow-1);
 }
 
 .form-label {
@@ -309,19 +319,6 @@ footer {
 
 /* REGISTER */
 
-.register {
-  margin: auto;
-  margin-top: 3rem;
-  max-width: 30rem;
-  border: 2px solid var(--purple);
-  border-radius: 10px;
-  box-shadow: var(--box-shadow-1);
-}
-
-.register .logo-pages {
-  margin: auto;
-}
-
 .member-btn {
   border: none;
   background-color: inherit;
@@ -330,8 +327,25 @@ footer {
   cursor: pointer;
 }
 
-.starred {
-  color: red;
+/* CREATE ACCOUNT */
+
+.create-account-head {
+  margin: 20px 0;
+}
+
+.account-rule {
+  margin: auto;
+  width: 75%;
+}
+
+.no-account {
+  font-weight: bold;
+  margin: 15px 0 25px;
+  padding-top: 10px;
+}
+
+.no-account button {
+  margin-top: 20px;
 }
 
 /* DASHBOARD */

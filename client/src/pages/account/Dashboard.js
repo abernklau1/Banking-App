@@ -4,7 +4,7 @@ import { useAppContext } from "../../context/appContext";
 const Dashboard = () => {
   const {
     user: { name, email, location, lastName },
-    accNumber,
+    account: { accNumber },
     routingNumber,
   } = useAppContext();
   return (

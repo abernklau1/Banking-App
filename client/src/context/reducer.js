@@ -43,6 +43,7 @@ const reducer = (state, action) => {
       isLoading: false,
       token: action.payload.token,
       user: action.payload.user,
+      account: action.payload.account,
       userLocation: action.payload.location,
       showAlert: true,
       alertType: "success",
@@ -89,10 +90,10 @@ const reducer = (state, action) => {
     return {
       ...state,
       isLoading: false,
-      accNumber: action.payload.accNumber,
-      savings: action.payload.savings,
-      checking: action.payload.checking,
-      totalBalance: action.payload.totalBalance,
+      account: action.payload.account,
+      showAlert: true,
+      alertType: "success",
+      alertText: "Account Created! Redirecting...",
     };
   }
 

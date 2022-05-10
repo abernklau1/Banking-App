@@ -15,7 +15,7 @@ const AccountSchema = new mongoose.Schema({
   },
   totalBalance: {
     type: Number,
-    maxlength: 16,
+    maxlength: 8,
   },
   createdBy: {
     type: mongoose.Types.ObjectId,

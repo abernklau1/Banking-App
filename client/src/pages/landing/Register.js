@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { FormInput, Logo, Alert } from "../../components";
+import { FormInput, Logo, Alert, SubmitButton } from "../../components";
 import { useAppContext } from "../../context/appContext";
 
 const initialState = {
@@ -65,7 +65,7 @@ const Register = () => {
   return (
     <section className="register-form">
       <div className="content-container">
-        <form className="register" onSubmit={handleSubmit}>
+        <form className="form-outline" onSubmit={handleSubmit}>
           <Logo />
           <h3>{values.isMember ? "Login" : "Register"}</h3>
           {showAlert && <Alert />}
@@ -102,9 +102,7 @@ const Register = () => {
             isStarred={true}
           />
 
-          <button type="submit" className="btn" disabled={isLoading}>
-            Submit
-          </button>
+          <SubmitButton text="Submit" isLoading={isLoading} />
           <p>
             {values.isMember ? "Not a member yet?" : "Already a member?"}
             <button type="button" onClick={toggleMember} className="member-btn">

@@ -7,6 +7,7 @@ import NavUser from "./NavUser";
 import NavLink from "./NavLink";
 import NavLinks from "./NavLinks";
 import SideBar from "./SideBar";
+import SubmitButton from "./SubmitButton";
 
 export {
   Navbar,
@@ -18,4 +19,5 @@ export {
   NavLink,
   NavLinks,
   SideBar,
+  SubmitButton,
 };

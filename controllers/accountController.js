@@ -19,9 +19,13 @@ const createAccount = async (req, res) => {
   }
 
   // generate random balances with consideration to max of 1 million
-  const savings = Math.floor(Math.random() * 1000001 * 100) / 100;
-  const checking = Math.floor(Math.random() * (1000001 - savings) * 100) / 100;
-  const totalBalance = savings + checking;
+  const savings = parseFloat(
+    (Math.floor(Math.random() * 1000001 * 100) / 100).toFixed(2)
+  );
+  const checking = parseFloat(
+    (Math.floor(Math.random() * (1000001 - savings) * 100) / 100).toFixed(2)
+  );
+  const totalBalance = parseFloat((savings + checking).toFixed(2));
 
   const account = await Account.create({
     accNumber,
@@ -37,19 +41,14 @@ const createAccount = async (req, res) => {
 const getBalances = async (req, res) => {
   // find account created by said user
   const userId = req.user.userId;
-  const account = await User.findOne({ userId });
+  const account = await Account.findOne({ createdBy: userId });
 
   // throw not found error if that is the case
   if (!account) {
     throw new NotFoundError(`No account associated with user: ${userId}`);
   }
 
-  const balances = {
-    totalBalance: account.totalBalance,
-    savings: account.savings,
-    checking: account.checking,
-  };
-  res.status(StatusCodes.OK).json({ balances });
+  res.status(StatusCodes.OK).json({ account });
 };
 
 const transferMoney = async (req, res) => {
@@ -63,7 +62,7 @@ const transferMoney = async (req, res) => {
 
   // check for account associate with user
   const userId = req.user.userId;
-  const account = await User.findOne({ userId });
+  const account = await User.findOne({ createdBy: userId });
 
   // if no account throw not found error
   if (!account) {
@@ -116,7 +115,7 @@ const transferMoney = async (req, res) => {
   }
 
   const updateAccount = await User.findOneAndUpdate(
-    { userId },
+    { createdBy: userId },
     { savings: newSavings, checking: newChecking },
     { new: true, runValidators: true }
   );

@@ -19,6 +19,7 @@ const user = localStorage.getItem("user");
 const token = localStorage.getItem("token");
 const userLocation = localStorage.getItem("location");
 const signedIn = localStorage.getItem("signedIn");
+const account = localStorage.getItem("account");
 
 const initialState = {
   isLoading: false,
@@ -32,10 +33,7 @@ const initialState = {
   showLogout: false,
   showSidebar: false,
   routingNumber: "#00000000",
-  accNumber: "",
-  savings: 0,
-  checking: 0,
-  totalBalance: 0,
+  account: account ? JSON.parse(account) : null,
 };
 
 const AppContext = createContext();
@@ -75,14 +73,25 @@ const AppProvider = ({ children }) => {
   const clearAlert = () => {
     setTimeout(() => {
       dispatch({ type: CLEAR_ALERT });
-    }, 3000);
+    }, 1000);
   };
 
-  const addUserToLocalStorage = ({ user, token, location, isSignedIn }) => {
-    localStorage.setItem("user", JSON.stringify(user));
-    localStorage.setItem("token", token);
-    localStorage.setItem("location", location);
-    localStorage.setItem("signedIn", isSignedIn);
+  const addUserToLocalStorage = ({
+    user,
+    token,
+    location,
+    isSignedIn,
+    account,
+  }) => {
+    if (user || token || location || isSignedIn) {
+      localStorage.setItem("user", JSON.stringify(user));
+      localStorage.setItem("token", token);
+      localStorage.setItem("location", location);
+      localStorage.setItem("signedIn", isSignedIn);
+    }
+    if (account) {
+      localStorage.setItem("account", JSON.stringify(account));
+    }
   };
 
   const removeUserFromLocalStorage = () => {
@@ -90,16 +99,32 @@ const AppProvider = ({ children }) => {
     localStorage.removeItem("token");
     localStorage.removeItem("location");
     localStorage.removeItem("signedIn");
+    localStorage.removeItem("account");
   };
 
   const setupUser = async ({ currentUser, endPoint, alertText }) => {
     dispatch({ type: SETUP_USER_BEGIN });
     try {
-      const { data } = await axios.post(
-        `/api/v1/auth/${endPoint}`,
-        currentUser
+      const {
+        data: { user, token, location },
+      } = await axios.post(`/api/v1/auth/${endPoint}`, currentUser);
+      const authFetch = axios.create({ baseURL: "/api/v1" });
+
+      authFetch.interceptors.request.use(
+        (config) => {
+          config.headers.common["authorization"] = `Bearer ${token}`;
+          return config;
+        },
+        (error) => {
+          return Promise.reject(error);
+        }
       );
-      const { user, token, location } = data;
+      let account = undefined;
+      if (endPoint === "login") {
+        const { data } = await authFetch("/user-account");
+        ({ account } = data);
+      }
+
       dispatch({
         type: SETUP_USER_SUCCESS,
         payload: {
@@ -108,14 +133,18 @@ const AppProvider = ({ children }) => {
           location,
           alertText,
           isSignedIn: true,
+          account,
         },
       });
-      addUserToLocalStorage({ user, token, location, isSignedIn: true });
-      console.log(state.token);
-      if (endPoint === "register") {
-        dispatch({ type: SETUP_ACCOUNT_BEGIN });
-      }
+      addUserToLocalStorage({
+        user,
+        token,
+        location,
+        isSignedIn: true,
+        account,
+      });
     } catch (error) {
+      console.log(error);
       dispatch({
         type: SETUP_USER_ERROR,
         payload: { alertText: error.response.data.msg },
@@ -141,8 +170,9 @@ const AppProvider = ({ children }) => {
     dispatch({ type: SETUP_ACCOUNT_BEGIN });
     try {
       const { data } = await authFetch.post(`/user-account`);
-      console.log(data);
-      dispatch({ type: SETUP_ACCOUNT_SUCCESS });
+      const { account } = data;
+      dispatch({ type: SETUP_ACCOUNT_SUCCESS, payload: { account } });
+      addUserToLocalStorage({ account });
     } catch (error) {
       if (error.status === 401) return;
       dispatch({
@@ -160,6 +190,7 @@ const AppProvider = ({ children }) => {
         toggleLogout,
         logoutUser,
         toggleSidebar,
+        createAccount,
       }}
     >
       {children}

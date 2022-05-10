@@ -1,10 +1,12 @@
 import { useAppContext } from "../../context/appContext";
 
 const Accounts = () => {
-  const { savings, checking, totalBalance } = useAppContext();
+  const {
+    account: { savings, checking, totalBalance },
+  } = useAppContext();
   return (
     <section>
-      <div className="account-container">
+      <div className="account-container content-container">
         <header>
           <h2>Accounts</h2>
         </header>
