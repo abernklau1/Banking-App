@@ -11,6 +11,7 @@ const FormInput = (props) => {
         value={props.value}
         onChange={props.handleChange}
         className="form-input"
+        {...props}
       />
     </div>
   );

@@ -7,6 +7,7 @@ const Dashboard = () => {
     account: { accNumber },
     routingNumber,
   } = useAppContext();
+
   return (
     <section>
       <header className="dash">

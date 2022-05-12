@@ -328,6 +328,10 @@ footer {
   cursor: pointer;
 }
 
+.starred {
+  color: red;
+}
+
 /* CREATE ACCOUNT */
 
 .create-account-head {

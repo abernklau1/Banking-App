@@ -53,16 +53,17 @@ const getBalances = async (req, res) => {
 
 const transferMoney = async (req, res) => {
   // pull value from user input
-  const { toAccount, amount } = req.body;
-
+  let { toAccount, amount } = req.body;
+  amount = parseFloat(amount);
   // if no value throw new bad request error
-  if (!toAccount) {
-    throw new BadRequestError("Please provide the transfer account");
+  if (!toAccount || !amount) {
+    console.log(toAccount, amount);
+    throw new BadRequestError("Please provide all values");
   }
 
   // check for account associate with user
   const userId = req.user.userId;
-  const account = await User.findOne({ createdBy: userId });
+  const account = await Account.findOne({ createdBy: userId });
 
   // if no account throw not found error
   if (!account) {
@@ -76,8 +77,8 @@ const transferMoney = async (req, res) => {
 
   // check which account user requested transfer to
   if (toAccount === "Savings") {
-    newSavings = savings + amount;
-    newChecking = checking - amount;
+    newSavings = parseFloat((savings + amount).toFixed(2));
+    newChecking = parseFloat((checking - amount).toFixed(2));
 
     // check if requested transfer amount will exceed max bank account amount
     if (newSavings > 1000000) {
@@ -96,8 +97,8 @@ const transferMoney = async (req, res) => {
 
   // '''
   if (toAccount === "Checking") {
-    newSavings = savings - amount;
-    newChecking = checking + amount;
+    newSavings = parseFloat((savings - amount).toFixed(2));
+    newChecking = parseFloat((checking + amount).toFixed(2));
 
     // '''
     if (newChecking > 1000000) {
@@ -114,9 +115,11 @@ const transferMoney = async (req, res) => {
     }
   }
 
-  const updateAccount = await User.findOneAndUpdate(
+  const newTotal = parseFloat((newSavings + newChecking).toFixed(2));
+
+  const updateAccount = await Account.findOneAndUpdate(
     { createdBy: userId },
-    { savings: newSavings, checking: newChecking },
+    { savings: newSavings, checking: newChecking, totalBalance: newTotal },
     { new: true, runValidators: true }
   );
   res.status(StatusCodes.OK).json({ updateAccount });

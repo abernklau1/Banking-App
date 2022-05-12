@@ -1,10 +1,17 @@
 import { useAppContext } from "../../context/appContext";
 import { AccountTable } from "../../components/index";
+//import { useEffect } from "react";
 
 const Accounts = () => {
   const {
     account: { savings, checking, totalBalance },
+    //getAccount,
   } = useAppContext();
+
+  // useEffect(() => {
+  //   getAccount();
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
   return (
     <section className="account-sections content-container">
       <header>

@@ -10,6 +10,12 @@ import {
   SETUP_ACCOUNT_SUCCESS,
   SETUP_ACCOUNT_ERROR,
   SETUP_ACCOUNT_BEGIN,
+  TRANSFER_BEGIN,
+  TRANSFER_SUCCESS,
+  TRANSFER_ERROR,
+  CLEAR_VALUES,
+  GET_ACCOUNT_BEGIN,
+  GET_ACCOUNT_SUCCESS,
 } from "./actions";
 
 import { initialState } from "./appContext";
@@ -20,7 +26,7 @@ const reducer = (state, action) => {
       ...state,
       showAlert: true,
       alertType: "danger",
-      alertText: "Please provide starred values",
+      alertText: action.payload.alertText || "Please provide starred values",
     };
   }
   if (action.type === CLEAR_ALERT) {
@@ -105,6 +111,43 @@ const reducer = (state, action) => {
       alertType: "danger",
       alertText: action.payload.msg,
     };
+  }
+
+  if (action.type === GET_ACCOUNT_BEGIN) {
+    return { ...state, isLoading: true, showAlert: false };
+  }
+
+  if (action.type === GET_ACCOUNT_SUCCESS) {
+    return { ...state, isLoading: false, account: action.payload.account };
+  }
+
+  if (action.type === TRANSFER_BEGIN) {
+    return { ...state, isLoading: true };
+  }
+
+  if (action.type === TRANSFER_SUCCESS) {
+    return {
+      ...state,
+      isLoading: false,
+      account: action.payload.account,
+      showAlert: true,
+      alertType: "success",
+      alertText: "Transfer Successful!",
+    };
+  }
+
+  if (action.type === TRANSFER_ERROR) {
+    return {
+      ...state,
+      isLoading: false,
+      showAlert: true,
+      alertType: "danger",
+      alertText: action.payload.msg,
+    };
+  }
+
+  if (action.type === CLEAR_VALUES) {
+    return { ...state };
   }
   throw new Error(`no such action: ${action.type}`);
 };

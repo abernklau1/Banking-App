@@ -11,6 +11,12 @@ import {
   SETUP_ACCOUNT_SUCCESS,
   SETUP_ACCOUNT_ERROR,
   SETUP_ACCOUNT_BEGIN,
+  GET_ACCOUNT_BEGIN,
+  GET_ACCOUNT_SUCCESS,
+  TRANSFER_BEGIN,
+  TRANSFER_ERROR,
+  TRANSFER_SUCCESS,
+  CLEAR_VALUES,
 } from "./actions";
 import reducer from "./reducer";
 import axios from "axios";
@@ -65,8 +71,13 @@ const AppProvider = ({ children }) => {
     }
   );
 
-  const displayAlert = () => {
-    dispatch({ type: DISPLAY_ALERT });
+  const displayAlert = (alertText) => {
+    if (alertText) {
+      dispatch({ type: DISPLAY_ALERT, payload: alertText });
+    } else {
+      dispatch({ type: DISPLAY_ALERT });
+    }
+
     clearAlert();
   };
 
@@ -74,6 +85,10 @@ const AppProvider = ({ children }) => {
     setTimeout(() => {
       dispatch({ type: CLEAR_ALERT });
     }, 1000);
+  };
+
+  const clearValues = () => {
+    dispatch({ type: CLEAR_VALUES });
   };
 
   const addUserToLocalStorage = ({
@@ -108,6 +123,7 @@ const AppProvider = ({ children }) => {
       const {
         data: { user, token, location },
       } = await axios.post(`/api/v1/auth/${endPoint}`, currentUser);
+
       const authFetch = axios.create({ baseURL: "/api/v1" });
 
       authFetch.interceptors.request.use(
@@ -180,6 +196,38 @@ const AppProvider = ({ children }) => {
       });
     }
   };
+
+  const getAccount = async () => {
+    dispatch({ type: GET_ACCOUNT_BEGIN });
+    try {
+      const { data: account } = await authFetch("/user-account");
+      dispatch({ type: GET_ACCOUNT_SUCCESS, payload: account });
+      addUserToLocalStorage({ account });
+    } catch (error) {
+      logoutUser();
+    }
+    clearAlert();
+  };
+
+  const transferMoney = async ({ details }) => {
+    dispatch({ type: TRANSFER_BEGIN });
+    try {
+      const { account: toAccount, amount } = details;
+      const { data } = await authFetch.patch("/user-account/transfer", {
+        toAccount,
+        amount,
+      });
+      const { updateAccount: account } = data;
+      addUserToLocalStorage({ account });
+      dispatch({ type: TRANSFER_SUCCESS, payload: { account } });
+    } catch (error) {
+      dispatch({
+        type: TRANSFER_ERROR,
+        payload: { msg: error.response.data.msg },
+      });
+    }
+    clearAlert();
+  };
   return (
     <AppContext.Provider
       value={{
@@ -190,6 +238,9 @@ const AppProvider = ({ children }) => {
         logoutUser,
         toggleSidebar,
         createAccount,
+        getAccount,
+        transferMoney,
+        clearValues,
       }}
     >
       {children}

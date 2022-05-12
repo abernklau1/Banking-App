@@ -4,7 +4,7 @@ import { Logo } from "../../components";
 const Home = () => {
   return (
     <section className="home">
-      <div class="content-container">
+      <div className="content-container">
         <div className="logo-container">
           <Logo />
           <p className="home-par">
