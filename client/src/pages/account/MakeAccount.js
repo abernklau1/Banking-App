@@ -41,7 +41,7 @@ const MakeAccount = () => {
           ) : (
             <div className="no-account">
               <p>
-                You have yet to create an account! Let's create one for you!
+                You have yet to create a bank account! Let's create one for you!
               </p>
               <SubmitButton text="Create Account" isLoading={isLoading} />
             </div>

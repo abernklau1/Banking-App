@@ -144,7 +144,6 @@ const AppProvider = ({ children }) => {
         account,
       });
     } catch (error) {
-      console.log(error);
       dispatch({
         type: SETUP_USER_ERROR,
         payload: { alertText: error.response.data.msg },

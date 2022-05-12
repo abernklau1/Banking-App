@@ -8,6 +8,10 @@ import NavLink from "./NavLink";
 import NavLinks from "./NavLinks";
 import SideBar from "./SideBar";
 import SubmitButton from "./SubmitButton";
+import TableRow from "./TableRow";
+import TableHead from "./TableHead";
+import TotalRow from "./TotalRow";
+import AccountTable from "./AccountTable";
 
 export {
   Navbar,
@@ -20,4 +24,8 @@ export {
   NavLinks,
   SideBar,
   SubmitButton,
+  TableHead,
+  TableRow,
+  TotalRow,
+  AccountTable,
 };

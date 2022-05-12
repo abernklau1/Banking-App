@@ -1,38 +1,28 @@
 import { useAppContext } from "../../context/appContext";
+import { AccountTable } from "../../components/index";
 
 const Accounts = () => {
   const {
     account: { savings, checking, totalBalance },
   } = useAppContext();
   return (
-    <section>
-      <div className="account-container content-container">
-        <header>
-          <h2>Accounts</h2>
-        </header>
-        <table>
-          <thead>
-            <tr>
-              <th>Account</th>
-              <th className="balance">Balance</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Savings</td>
-              <td className="balance">${savings}</td>
-            </tr>
-            <tr>
-              <td>Checking</td>
-              <td className="balance">${checking}</td>
-            </tr>
-            <tr>
-              <td>Total</td>
-              <td className="balance">${totalBalance}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+    <section className="account-sections content-container">
+      <header>
+        <h2>Accounts</h2>
+      </header>
+      <AccountTable
+        savings={{
+          account: "Savings",
+          accountType: "Prime Share Account",
+          accountBalance: savings,
+        }}
+        checking={{
+          account: "Checking",
+          accountType: "Basic Checking",
+          accountBalance: checking,
+        }}
+        accountTotal={totalBalance}
+      />
     </section>
   );
 };

@@ -18,6 +18,9 @@ const Dashboard = () => {
             <li className="dash-nav-items">
               <a href="/dashboard/transfer">Transfer</a>
             </li>
+            <li className="dash-nav-items">
+              <a href="/make-account">Create New</a>
+            </li>
           </ul>
         </nav>
         <ul className="dash-list">

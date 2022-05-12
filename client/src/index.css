@@ -6,7 +6,8 @@
   --box-shadow-3: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   --box-shadow-4: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
     rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
-  --blue: #2932e2;
+  --blue: #2155CD;
+  /* #2932e2 */
   --purple: #9499f1;
   --dark-purple: #7f84ee;
   --light-purple: #d4d6f9;
@@ -142,7 +143,7 @@ span {
   display: block;
   position: absolute;
   top: 85px;
-  left: 55px;
+  left: 50px;
 }
 
 .nav-list {
@@ -359,8 +360,8 @@ footer {
 
 .dash-nav-items {
   display: inline;
-  margin: 20px 30px 0;
-  width: 150px;
+  margin: 10px 30px 0;
+  width: 100px;
 }
 
 .dash-nav-items a {
@@ -373,13 +374,12 @@ footer {
   border-radius: 10px;
   box-shadow: var(--box-shadow-3);
   height: 25px;
-  line-height: 1.4;
+  line-height: 1.7;
   border: 1px solid var(--blue);
+  font-size: 0.8rem;
 }
 
 .dash-nav-items a:hover {
-  /* color: white;
-  background-color: var(--blue); */
   box-shadow: var(--box-shadow-1);
 }
 
@@ -405,12 +405,16 @@ footer {
   font-weight: 500;
 }
 
+
 /* ACCOUNT */
 
-.account-container {
+.account-container,
+.account-sections header {
   width: 800px;
   text-align: left;
   margin: auto;
+  padding-bottom: 10px;
+
 }
 
 .account-container h2 {
@@ -452,6 +456,16 @@ table tbody tr:last-of-type {
 
 .balance {
   text-align: right;
+}
+
+.account-type {
+  text-align: center;
+}
+
+.account-type div {
+  width: 65%;
+  margin: auto;
+  text-align: left;
 }
 
 /* ALERTS */
@@ -502,6 +516,7 @@ table tbody tr:last-of-type {
 .about {
   padding-bottom: var(--footer-height);
 }
+
 .hero {
   margin: 1rem auto;
   max-width: 640px;
@@ -612,7 +627,8 @@ table tbody tr:last-of-type {
   }
 
   /* ACCOUNT */
-  .account-container {
+  .account-container,
+  .account-sections header {
     width: 600px;
   }
 }
