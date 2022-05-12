@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Error, ProtectedRoute, NoAccount } from "./pages";
+import { Error, ProtectedRoute } from "./pages";
 import { About, Support, Register, SharedLayout, Home } from "./pages/landing";
 import { Dashboard, Transfer, Accounts, MakeAccount } from "./pages/account";
 const App = () => {
@@ -12,25 +12,16 @@ const App = () => {
           <Route path="/support" element={<Support />} />
           <Route path="/register" element={<Register />} />
           <Route
-            path="/make-account"
-            element={
-              <ProtectedRoute>
-                <MakeAccount />
-              </ProtectedRoute>
-            }
-          />
-          <Route
             path="/dashboard"
             element={
               <ProtectedRoute>
-                <NoAccount>
-                  <Dashboard />
-                </NoAccount>
+                <Dashboard />
               </ProtectedRoute>
             }
           >
             <Route index element={<Accounts />} />
             <Route path="/dashboard/transfer" element={<Transfer />} />
+            <Route path="/dashboard/make-account" element={<MakeAccount />} />
           </Route>
         </Route>
         <Route path="*" element={<Error />} />

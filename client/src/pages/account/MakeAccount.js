@@ -1,6 +1,11 @@
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { Alert, FormInput, SubmitButton } from "../../components";
+import { useState } from "react";
+import {
+  Alert,
+  FormInput,
+  FormRowSelect,
+  SubmitButton,
+} from "../../components";
 import { useAppContext } from "../../context/appContext";
 
 const MakeAccount = () => {
@@ -16,15 +21,10 @@ const MakeAccount = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     createAccount();
+    setTimeout(() => {
+      navigate("/dashboard");
+    }, 1000);
   };
-
-  useEffect(() => {
-    if (account) {
-      setTimeout(() => {
-        navigate("/dashboard");
-      }, 1000);
-    }
-  }, [account, navigate]);
 
   return (
     <section>
@@ -35,7 +35,18 @@ const MakeAccount = () => {
           {showAlert && <Alert />}
           {hasAccount ? (
             <div className="has-account">
-              <FormInput type="" />
+              <FormRowSelect
+                name="accountType"
+                labelText="Account Type"
+                list={["Prime Share Account", "Basic Checking"]}
+              />
+              <FormInput
+                type="number"
+                name="newAccountBalance"
+                labelText="New Account Balance"
+                step=".01"
+                min="0"
+              />
               <SubmitButton text="Create Account" isLoading={isLoading} />
             </div>
           ) : (

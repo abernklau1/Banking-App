@@ -3,6 +3,7 @@ import {
   FormInput,
   SubmitButton,
   Alert,
+  FormRowSelect,
 } from "../../components/index";
 import { useAppContext } from "../../context/appContext";
 import {
@@ -70,17 +71,13 @@ const Transfer = () => {
       <div className="transfers">
         <form className="form-outline" onSubmit={handleSubmit}>
           {showAlert && <Alert />}
-          <FormInput
+          <FormRowSelect
+            labelText="To Account"
             name="account"
             value={values.account}
-            labelText="To Account"
             handleChange={handleChange}
-            list="accounts"
+            list={["Savings", "Checking"]}
           />
-          <datalist id="accounts">
-            <option>Savings</option>
-            <option>Checking</option>
-          </datalist>
           <FormInput
             type="number"
             name="amount"
@@ -88,6 +85,7 @@ const Transfer = () => {
             labelText="Amount"
             handleChange={handleChange}
             step=".01"
+            min="0"
           />
           <SubmitButton text="Transfer" />
         </form>

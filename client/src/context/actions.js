@@ -30,3 +30,6 @@ export const GET_ACCOUNT_SUCCESS = "GET_ACCOUNT_SUCCESS";
 export const TRANSFER_BEGIN = "TRANSFER_BEGIN";
 export const TRANSFER_SUCCESS = "TRANSFER_SUCCESS";
 export const TRANSFER_ERROR = "TRANSFER_ERROR";
+
+// action to handle change of select form input
+export const HANDLE_CHANGE = "HANDLE_CHANGE";

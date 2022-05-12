@@ -21,25 +21,27 @@ import {
 import reducer from "./reducer";
 import axios from "axios";
 
-const user = localStorage.getItem("user");
+let user = localStorage.getItem("user");
 const token = localStorage.getItem("token");
 const userLocation = localStorage.getItem("location");
 const signedIn = localStorage.getItem("signedIn");
-const account = localStorage.getItem("account");
+//const account = localStorage.getItem("account");
+
+user = JSON.parse(user);
 
 const initialState = {
   isLoading: false,
   showAlert: false,
   alertType: "",
   alertText: "",
-  user: user ? JSON.parse(user) : null,
+  user: user ? user : null,
   token: token,
   userLocation: userLocation || "",
   isSignedIn: signedIn || false,
   showLogout: false,
   showSidebar: false,
   routingNumber: "#00000000",
-  account: account ? JSON.parse(account) : null,
+  accounts: user ? user.accounts : null,
 };
 
 const AppContext = createContext();
@@ -96,17 +98,17 @@ const AppProvider = ({ children }) => {
     token,
     location,
     isSignedIn,
-    account,
+    //account,
   }) => {
-    if (user || token || location || isSignedIn) {
-      localStorage.setItem("user", JSON.stringify(user));
-      localStorage.setItem("token", token);
-      localStorage.setItem("location", location);
-      localStorage.setItem("signedIn", isSignedIn);
-    }
-    if (account) {
-      localStorage.setItem("account", JSON.stringify(account));
-    }
+    //if (user || token || location || isSignedIn) {
+    localStorage.setItem("user", JSON.stringify(user));
+    localStorage.setItem("token", token);
+    localStorage.setItem("location", location);
+    localStorage.setItem("signedIn", isSignedIn);
+    //}
+    // if (account) {
+    //   localStorage.setItem("account", JSON.stringify(account));
+    // }
   };
 
   const removeUserFromLocalStorage = () => {
@@ -114,7 +116,7 @@ const AppProvider = ({ children }) => {
     localStorage.removeItem("token");
     localStorage.removeItem("location");
     localStorage.removeItem("signedIn");
-    localStorage.removeItem("account");
+    //localStorage.removeItem("account");
   };
 
   const setupUser = async ({ currentUser, endPoint, alertText }) => {
@@ -124,22 +126,22 @@ const AppProvider = ({ children }) => {
         data: { user, token, location },
       } = await axios.post(`/api/v1/auth/${endPoint}`, currentUser);
 
-      const authFetch = axios.create({ baseURL: "/api/v1" });
+      // const authFetch = axios.create({ baseURL: "/api/v1" });
 
-      authFetch.interceptors.request.use(
-        (config) => {
-          config.headers.common["authorization"] = `Bearer ${token}`;
-          return config;
-        },
-        (error) => {
-          return Promise.reject(error);
-        }
-      );
-      let account = undefined;
-      if (endPoint === "login") {
-        const { data } = await authFetch("/user-account");
-        ({ account } = data);
-      }
+      // authFetch.interceptors.request.use(
+      //   (config) => {
+      //     config.headers.common["authorization"] = `Bearer ${token}`;
+      //     return config;
+      //   },
+      //   (error) => {
+      //     return Promise.reject(error);
+      //   }
+      // );
+      // let account = undefined;
+      // if (endPoint === "login") {
+      //   const { data } = await authFetch("/user-account");
+      //   ({ account } = data);
+      // }
 
       dispatch({
         type: SETUP_USER_SUCCESS,
@@ -149,7 +151,7 @@ const AppProvider = ({ children }) => {
           location,
           alertText,
           isSignedIn: true,
-          account,
+          //account,
         },
       });
       addUserToLocalStorage({
@@ -157,7 +159,7 @@ const AppProvider = ({ children }) => {
         token,
         location,
         isSignedIn: true,
-        account,
+        //account,
       });
     } catch (error) {
       dispatch({
@@ -181,13 +183,15 @@ const AppProvider = ({ children }) => {
     dispatch({ type: TOGGLE_SIDEBAR });
   };
 
-  const createAccount = async () => {
+  const createAccount = async (currentUser) => {
     dispatch({ type: SETUP_ACCOUNT_BEGIN });
     try {
-      const { data } = await authFetch.post(`/user-account`);
-      const { account } = data;
-      dispatch({ type: SETUP_ACCOUNT_SUCCESS, payload: { account } });
-      addUserToLocalStorage({ account });
+      const {
+        data: { user },
+      } = await authFetch.post(`/user-account`, currentUser);
+      // const { account } = data;
+      dispatch({ type: SETUP_ACCOUNT_SUCCESS, payload: { user } });
+      addUserToLocalStorage({ user });
     } catch (error) {
       if (error.status === 401) return;
       dispatch({

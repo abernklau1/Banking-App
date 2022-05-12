@@ -1,54 +1,34 @@
-import Account from "../schemas/Account.js";
+import User from "../schemas/User.js";
 import { StatusCodes } from "http-status-codes";
 import { BadRequestError, NotFoundError } from "../errors/index.js";
+import checkPermissions from "../utils/checkPermissions.js";
 
 const createAccount = async (req, res) => {
-  // search for account numbers
-  const accNumbers = await Account.find().select("accNumber");
+  const { accType, balance } = req.body;
 
-  // generate account numbers between 200k & 300k
-  let accNumber = Math.floor(Math.random() * 100000) + 200000;
+  const userId = req.user.userId;
 
-  // generate unique account numbers
-  for (let i = 0; i < accNumbers.length; i++) {
-    if (accNumber === accNumbers[i]) {
-      accNumber = Math.floor(Math.random() * 100000) + 200000;
-      i = -1;
-      continue;
-    }
-  }
+  const user = await User.findOne({ _id: userId });
+  user.accounts.push({ accType: accType, balance: balance });
 
-  // generate random balances with consideration to max of 1 million
-  const savings = parseFloat(
-    (Math.floor(Math.random() * 1000001 * 100) / 100).toFixed(2)
-  );
-  const checking = parseFloat(
-    (Math.floor(Math.random() * (1000001 - savings) * 100) / 100).toFixed(2)
-  );
-  const totalBalance = parseFloat((savings + checking).toFixed(2));
+  await user.save();
 
-  const account = await Account.create({
-    accNumber,
-    savings,
-    checking,
-    totalBalance,
-    createdBy: req.user.userId,
-  });
-
-  res.status(StatusCodes.CREATED).json({ account });
+  res
+    .status(StatusCodes.CREATED)
+    .json({ accountCreated: user.accounts.at(-1) });
 };
 
-const getBalances = async (req, res) => {
+const getAccounts = async (req, res) => {
   // find account created by said user
   const userId = req.user.userId;
-  const account = await Account.findOne({ createdBy: userId });
+  const accounts = await User.findOne({ userId }).select("accounts");
 
   // throw not found error if that is the case
-  if (!account) {
+  if (!accounts) {
     throw new NotFoundError(`No account associated with user: ${userId}`);
   }
 
-  res.status(StatusCodes.OK).json({ account });
+  res.status(StatusCodes.OK).json({ accounts });
 };
 
 const transferMoney = async (req, res) => {
@@ -63,66 +43,54 @@ const transferMoney = async (req, res) => {
 
   // check for account associate with user
   const userId = req.user.userId;
-  const account = await Account.findOne({ createdBy: userId });
+  const accounts = await User.findOne({ _id: userId }).select("accounts");
 
   // if no account throw not found error
-  if (!account) {
+  if (!accounts) {
     throw new NotFoundError("Invalid Account");
   }
 
-  const savings = account.savings;
-  const checking = account.checking;
-  let newSavings;
-  let newChecking;
+  let savings;
+  let checking;
+
+  // loop through accounts associated w/ user to find savings and checking accounts
+  accounts.map((account) => {
+    if (account.accType === "Prime Share Account") {
+      savings = account;
+    }
+    if (account.accType === "Basic Checking") {
+      checking = account;
+    }
+    if (savings && checking) {
+      return;
+    }
+  });
 
   // check which account user requested transfer to
   if (toAccount === "Savings") {
-    newSavings = parseFloat((savings + amount).toFixed(2));
-    newChecking = parseFloat((checking - amount).toFixed(2));
-
-    // check if requested transfer amount will exceed max bank account amount
-    if (newSavings > 1000000) {
-      throw new BadRequestError(
-        "Adding this amount would exceed the max amount"
-      );
-    }
-
-    // check if requested transfer amount will cause account to go negative
-    if (newChecking < 0) {
-      throw new BadRequestError(
-        "Transferring this amount would set account negative"
-      );
-    }
+    savings.balance = parseFloat((savings.balance + amount).toFixed(2));
+    checking.balance = parseFloat((checking.balance - amount).toFixed(2));
   }
 
   // '''
   if (toAccount === "Checking") {
-    newSavings = parseFloat((savings - amount).toFixed(2));
-    newChecking = parseFloat((checking + amount).toFixed(2));
-
-    // '''
-    if (newChecking > 1000000) {
-      throw new BadRequestError(
-        "Adding this amount would exceed the max amount"
-      );
-    }
-
-    // '''
-    if (newSavings < 5) {
-      throw new BadRequestError(
-        "Transferring this amount would set account negative"
-      );
-    }
+    savings.balance = parseFloat((savings - amount).toFixed(2));
+    checking.balance = parseFloat((checking + amount).toFixed(2));
   }
-
-  const newTotal = parseFloat((newSavings + newChecking).toFixed(2));
-
-  const updateAccount = await Account.findOneAndUpdate(
-    { createdBy: userId },
-    { savings: newSavings, checking: newChecking, totalBalance: newTotal },
-    { new: true, runValidators: true }
-  );
-  res.status(StatusCodes.OK).json({ updateAccount });
+  const accountsList = [savings, checking];
+  const updateAccounts = accountsList.forEach((account) => {
+    User.findOneAndUpdate(
+      { _id: userId, "accounts._id": account._id },
+      { $set: { balance: account.balance } },
+      { new: true, runValidators: true }
+    );
+  });
+  //await User.findOneAndUpdate(
+  //   { _id: userId, "accounts._id": [] },
+  //   { savings: newSavings, checking: newChecking, totalBalance: newTotal },
+  //   { new: true, runValidators: true }
+  // );
+  res.status(StatusCodes.OK).json({ updateAccounts });
 };
 
-export { createAccount, getBalances, transferMoney };
+export { createAccount, getAccounts, transferMoney };

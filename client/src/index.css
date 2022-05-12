@@ -101,7 +101,8 @@ span {
   font-weight: bold;
 }
 
-.form-input {
+.form-input,
+.form-select {
   height: 2rem;
   border-radius: 5px;
   width: 100%;
@@ -110,7 +111,8 @@ span {
   padding-left: 0.3rem;
 }
 
-.form-input:focus {
+.form-input:focus,
+.form-select:focus {
   outline: none !important;
   border: 2px solid var(--blue);
   box-shadow: 0 0 10px var(--light-blue);

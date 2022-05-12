@@ -41,18 +41,18 @@ const UserSchema = new mongoose.Schema({
     type: String,
     length: 7,
   },
-  savings: {
-    type: Number,
-    maxlength: 8,
-  },
-  checking: {
-    type: Number,
-    maxlength: 8,
-  },
-  totalBalance: {
-    type: Number,
-    maxlength: 16,
-  },
+  accounts: [
+    {
+      accType: {
+        type: String,
+        required: [true, "Please provide account type"],
+      },
+      balance: {
+        type: Number,
+        required: [true, "Please provide account balance"],
+      },
+    },
+  ],
 });
 
 UserSchema.pre("save", async function () {

@@ -30,6 +30,18 @@ const Accounts = () => {
         }}
         accountTotal={totalBalance}
       />
+      {/* {Object.entries(accounts).map(([key, value], index) => {
+        return (
+          <AccountTable
+            account={{
+              account: value.account,
+              accountType: value.accountType,
+              accountBalance: value.accountBalance,
+            }}
+            key={index}
+          />
+        );
+      })} */}
     </section>
   );
 };

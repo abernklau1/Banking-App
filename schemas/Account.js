@@ -5,6 +5,9 @@ const AccountSchema = new mongoose.Schema({
     type: String,
     length: 7,
   },
+  accountType: {
+    type: String,
+  },
   savings: {
     type: Number,
     maxlength: 8,
@@ -13,7 +16,7 @@ const AccountSchema = new mongoose.Schema({
     type: Number,
     maxlength: 8,
   },
-  totalBalance: {
+  balance: {
     type: Number,
     maxlength: 8,
   },
@@ -23,5 +26,19 @@ const AccountSchema = new mongoose.Schema({
     required: [true, "Please provide user"],
   },
 });
+
+// const AccountsSchema = new mongoose.Schema({
+//   accounts: [
+//     {
+//       accType: String,
+//       balance: { type: Number, maxlength: 8 },
+//       createdBy: {
+//         type: mongoose.Types.ObjectId,
+//         ref: "User",
+//         required: [true, "Please provide user"],
+//       },
+//     },
+//   ],
+// });
 
 export default mongoose.model("Account", AccountSchema);
