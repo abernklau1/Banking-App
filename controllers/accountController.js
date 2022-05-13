@@ -1,7 +1,6 @@
 import User from "../schemas/User.js";
 import { StatusCodes } from "http-status-codes";
 import { BadRequestError, NotFoundError } from "../errors/index.js";
-import checkPermissions from "../utils/checkPermissions.js";
 
 const createAccount = async (req, res) => {
   const { accType, balance } = req.body;
@@ -37,13 +36,12 @@ const transferMoney = async (req, res) => {
   amount = parseFloat(amount);
   // if no value throw new bad request error
   if (!toAccount || !amount) {
-    console.log(toAccount, amount);
     throw new BadRequestError("Please provide all values");
   }
 
   // check for account associate with user
   const userId = req.user.userId;
-  const accounts = await User.findOne({ _id: userId }).select("accounts");
+  const { accounts } = await User.findOne({ _id: userId }).select("accounts");
 
   // if no account throw not found error
   if (!accounts) {
@@ -52,9 +50,8 @@ const transferMoney = async (req, res) => {
 
   let savings;
   let checking;
-
   // loop through accounts associated w/ user to find savings and checking accounts
-  accounts.map((account) => {
+  Object.entries(accounts).map(([key, account]) => {
     if (account.accType === "Prime Share Account") {
       savings = account;
     }
@@ -67,30 +64,35 @@ const transferMoney = async (req, res) => {
   });
 
   // check which account user requested transfer to
-  if (toAccount === "Savings") {
+  if (toAccount === "Prime Share Account") {
+    if (checking.balance - amount < 0) {
+      throw new BadRequestError("This amount is too great");
+    }
+
     savings.balance = parseFloat((savings.balance + amount).toFixed(2));
     checking.balance = parseFloat((checking.balance - amount).toFixed(2));
   }
 
   // '''
-  if (toAccount === "Checking") {
-    savings.balance = parseFloat((savings - amount).toFixed(2));
-    checking.balance = parseFloat((checking + amount).toFixed(2));
+  if (toAccount === "Basic Checking") {
+    if (savings.balance - amount < 5) {
+      throw new BadRequestError("This amount is too great");
+    }
+    savings.balance = parseFloat((savings.balance - amount).toFixed(2));
+    checking.balance = parseFloat((checking.balance + amount).toFixed(2));
   }
+
   const accountsList = [savings, checking];
-  const updateAccounts = accountsList.forEach((account) => {
-    User.findOneAndUpdate(
-      { _id: userId, "accounts._id": account._id },
-      { $set: { balance: account.balance } },
-      { new: true, runValidators: true }
-    );
-  });
-  //await User.findOneAndUpdate(
-  //   { _id: userId, "accounts._id": [] },
-  //   { savings: newSavings, checking: newChecking, totalBalance: newTotal },
-  //   { new: true, runValidators: true }
-  // );
-  res.status(StatusCodes.OK).json({ updateAccounts });
+  const updatedUser = await Promise.all(
+    accountsList.map(async (account) => {
+      return await User.findOneAndUpdate(
+        { _id: userId, "accounts.accType": account.accType },
+        { $set: { "accounts.$.balance": account.balance } },
+        { new: true, runValidators: true }
+      );
+    })
+  );
+  res.status(StatusCodes.OK).json({ updatedAccounts: updatedUser[1] });
 };
 
 export { createAccount, getAccounts, transferMoney };
