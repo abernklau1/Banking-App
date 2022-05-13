@@ -49,7 +49,7 @@ const reducer = (state, action) => {
       isLoading: false,
       token: action.payload.token,
       user: action.payload.user,
-      account: action.payload.account,
+      accounts: action.payload.user.accounts,
       userLocation: action.payload.location,
       showAlert: true,
       alertType: "success",
@@ -129,7 +129,8 @@ const reducer = (state, action) => {
     return {
       ...state,
       isLoading: false,
-      account: action.payload.account,
+      user: action.payload.user,
+      accounts: action.payload.user.accounts,
       showAlert: true,
       alertType: "success",
       alertText: "Transfer Successful!",
@@ -142,7 +143,7 @@ const reducer = (state, action) => {
       isLoading: false,
       showAlert: true,
       alertType: "danger",
-      alertText: action.payload.msg,
+      alertText: action.payload.alertText,
     };
   }
 

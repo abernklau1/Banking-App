@@ -25,7 +25,6 @@ let user = localStorage.getItem("user");
 const token = localStorage.getItem("token");
 const userLocation = localStorage.getItem("location");
 const signedIn = localStorage.getItem("signedIn");
-//const account = localStorage.getItem("account");
 
 user = JSON.parse(user);
 
@@ -75,7 +74,7 @@ const AppProvider = ({ children }) => {
 
   const displayAlert = (alertText) => {
     if (alertText) {
-      dispatch({ type: DISPLAY_ALERT, payload: alertText });
+      dispatch({ type: DISPLAY_ALERT, payload: { alertText } });
     } else {
       dispatch({ type: DISPLAY_ALERT });
     }
@@ -93,22 +92,15 @@ const AppProvider = ({ children }) => {
     dispatch({ type: CLEAR_VALUES });
   };
 
-  const addUserToLocalStorage = ({
-    user,
-    token,
-    location,
-    isSignedIn,
-    //account,
-  }) => {
-    //if (user || token || location || isSignedIn) {
-    localStorage.setItem("user", JSON.stringify(user));
-    localStorage.setItem("token", token);
-    localStorage.setItem("location", location);
-    localStorage.setItem("signedIn", isSignedIn);
-    //}
-    // if (account) {
-    //   localStorage.setItem("account", JSON.stringify(account));
-    // }
+  const addUserToLocalStorage = ({ user, token, location, isSignedIn }) => {
+    if (token && isSignedIn) {
+      localStorage.setItem("user", JSON.stringify(user));
+      localStorage.setItem("token", token);
+      localStorage.setItem("location", location);
+      localStorage.setItem("signedIn", isSignedIn);
+    } else if (user) {
+      localStorage.setItem("user", JSON.stringify(user));
+    }
   };
 
   const removeUserFromLocalStorage = () => {
@@ -116,7 +108,6 @@ const AppProvider = ({ children }) => {
     localStorage.removeItem("token");
     localStorage.removeItem("location");
     localStorage.removeItem("signedIn");
-    //localStorage.removeItem("account");
   };
 
   const setupUser = async ({ currentUser, endPoint, alertText }) => {
@@ -126,22 +117,7 @@ const AppProvider = ({ children }) => {
         data: { user, token, location },
       } = await axios.post(`/api/v1/auth/${endPoint}`, currentUser);
 
-      // const authFetch = axios.create({ baseURL: "/api/v1" });
-
-      // authFetch.interceptors.request.use(
-      //   (config) => {
-      //     config.headers.common["authorization"] = `Bearer ${token}`;
-      //     return config;
-      //   },
-      //   (error) => {
-      //     return Promise.reject(error);
-      //   }
-      // );
-      // let account = undefined;
-      // if (endPoint === "login") {
-      //   const { data } = await authFetch("/user-account");
-      //   ({ account } = data);
-      // }
+      console.log(user);
 
       dispatch({
         type: SETUP_USER_SUCCESS,
@@ -151,7 +127,7 @@ const AppProvider = ({ children }) => {
           location,
           alertText,
           isSignedIn: true,
-          //account,
+          accounts: user.accounts,
         },
       });
       addUserToLocalStorage({
@@ -159,7 +135,6 @@ const AppProvider = ({ children }) => {
         token,
         location,
         isSignedIn: true,
-        //account,
       });
     } catch (error) {
       dispatch({
@@ -204,9 +179,11 @@ const AppProvider = ({ children }) => {
   const getAccount = async () => {
     dispatch({ type: GET_ACCOUNT_BEGIN });
     try {
-      const { data: account } = await authFetch("/user-account");
-      dispatch({ type: GET_ACCOUNT_SUCCESS, payload: account });
-      addUserToLocalStorage({ account });
+      const {
+        data: { user },
+      } = await authFetch("/user-account");
+      dispatch({ type: GET_ACCOUNT_SUCCESS, payload: { user } });
+      addUserToLocalStorage({ user });
     } catch (error) {
       logoutUser();
     }
@@ -217,17 +194,18 @@ const AppProvider = ({ children }) => {
     dispatch({ type: TRANSFER_BEGIN });
     try {
       const { account: toAccount, amount } = details;
-      const { data } = await authFetch.patch("/user-account/transfer", {
+      const {
+        data: { user },
+      } = await authFetch.patch("/user-account/transfer", {
         toAccount,
         amount,
       });
-      const { updateAccount: account } = data;
-      addUserToLocalStorage({ account });
-      dispatch({ type: TRANSFER_SUCCESS, payload: { account } });
+      addUserToLocalStorage({ user });
+      dispatch({ type: TRANSFER_SUCCESS, payload: { user } });
     } catch (error) {
       dispatch({
         type: TRANSFER_ERROR,
-        payload: { msg: error.response.data.msg },
+        payload: { alertText: error.response.data.msg },
       });
     }
     clearAlert();

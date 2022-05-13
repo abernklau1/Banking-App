@@ -7,17 +7,27 @@ import {
   SubmitButton,
 } from "../../components";
 import { useAppContext } from "../../context/appContext";
-
+const initialValues = {
+  accountType: "Credit Card//HELOC",
+  newAccountBalance: "0.00",
+};
 const MakeAccount = () => {
   const navigate = useNavigate();
+  const [values, setValues] = useState(initialValues);
   const {
     showAlert,
     isLoading,
     user: { name },
     createAccount,
-    account,
   } = useAppContext();
-  const [hasAccount] = useState(account ? true : false);
+
+  const handleChange = (e) => {
+    setValues({
+      ...values,
+      [e.target.name]: e.target.value,
+    });
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     createAccount();
@@ -33,30 +43,25 @@ const MakeAccount = () => {
           <h2 className="create-account-head">Create an Account, {name}</h2>
           <hr className="account-rule" />
           {showAlert && <Alert />}
-          {hasAccount ? (
-            <div className="has-account">
-              <FormRowSelect
-                name="accountType"
-                labelText="Account Type"
-                list={["Prime Share Account", "Basic Checking"]}
-              />
-              <FormInput
-                type="number"
-                name="newAccountBalance"
-                labelText="New Account Balance"
-                step=".01"
-                min="0"
-              />
-              <SubmitButton text="Create Account" isLoading={isLoading} />
-            </div>
-          ) : (
-            <div className="no-account">
-              <p>
-                You have yet to create a bank account! Let's create one for you!
-              </p>
-              <SubmitButton text="Create Account" isLoading={isLoading} />
-            </div>
-          )}
+          <div className="has-account">
+            <FormRowSelect
+              name="accountType"
+              labelText="Account Type"
+              list={["Credit Card/HELOC", "Car Loan", "Home Loan"]}
+              value={values.accountType}
+              handleChange={handleChange}
+            />
+            <FormInput
+              type="number"
+              name="newAccountBalance"
+              labelText="New Account Balance"
+              step=".01"
+              min="0"
+              value={values.newAccountBalance}
+              handleChange={handleChange}
+            />
+            <SubmitButton text="Create Account" isLoading={isLoading} />
+          </div>
         </form>
       </div>
     </section>

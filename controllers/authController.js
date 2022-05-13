@@ -59,13 +59,10 @@ const register = async (req, res) => {
       location: user.location,
       name: user.name,
       accNumber: user.accNumber,
+      accounts: user.accounts,
     },
     token,
     location: user.location,
-    accounts: {
-      savings: user.accounts[0],
-      checking: user.accounts[1],
-    },
   });
 };
 

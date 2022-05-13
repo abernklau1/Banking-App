@@ -3,8 +3,7 @@ import { useAppContext } from "../../context/appContext";
 
 const Dashboard = () => {
   const {
-    user: { name, email, location, lastName },
-    account: { accNumber },
+    user: { name, email, location, lastName, accNumber },
     routingNumber,
   } = useAppContext();
 
@@ -20,7 +19,7 @@ const Dashboard = () => {
               <a href="/dashboard/transfer">Transfer</a>
             </li>
             <li className="dash-nav-items">
-              <a href="/make-account">Create New</a>
+              <a href="/dashboard/make-account">Create New</a>
             </li>
           </ul>
         </nav>

@@ -92,7 +92,9 @@ const transferMoney = async (req, res) => {
       );
     })
   );
-  res.status(StatusCodes.OK).json({ updatedAccounts: updatedUser[1] });
+  const user = updatedUser[1];
+
+  res.status(StatusCodes.OK).json({ user });
 };
 
 export { createAccount, getAccounts, transferMoney };

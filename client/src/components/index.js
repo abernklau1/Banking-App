@@ -13,6 +13,7 @@ import TableHead from "./TableHead";
 import TotalRow from "./TotalRow";
 import AccountTable from "./AccountTable";
 import FormRowSelect from "./FormRowSelect";
+import MainAccountTable from "./MainAccountTable";
 
 export {
   Navbar,
@@ -30,4 +31,5 @@ export {
   TotalRow,
   AccountTable,
   FormRowSelect,
+  MainAccountTable,
 };
