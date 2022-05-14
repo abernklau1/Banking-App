@@ -158,13 +158,12 @@ const AppProvider = ({ children }) => {
     dispatch({ type: TOGGLE_SIDEBAR });
   };
 
-  const createAccount = async (currentUser) => {
+  const createAccount = async (accType, balance) => {
     dispatch({ type: SETUP_ACCOUNT_BEGIN });
     try {
       const {
         data: { user },
-      } = await authFetch.post(`/user-account`, currentUser);
-      // const { account } = data;
+      } = await authFetch.patch(`/user-account`, { accType, balance });
       dispatch({ type: SETUP_ACCOUNT_SUCCESS, payload: { user } });
       addUserToLocalStorage({ user });
     } catch (error) {
@@ -200,12 +199,12 @@ const AppProvider = ({ children }) => {
         toAccount,
         amount,
       });
-      addUserToLocalStorage({ user });
       dispatch({ type: TRANSFER_SUCCESS, payload: { user } });
+      addUserToLocalStorage({ user });
     } catch (error) {
       dispatch({
         type: TRANSFER_ERROR,
-        payload: { alertText: error.response.data.msg },
+        payload: { msg: error.response.data.msg },
       });
     }
     clearAlert();

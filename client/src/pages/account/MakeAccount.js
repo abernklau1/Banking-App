@@ -8,8 +8,8 @@ import {
 } from "../../components";
 import { useAppContext } from "../../context/appContext";
 const initialValues = {
-  accountType: "Credit Card//HELOC",
-  newAccountBalance: "0.00",
+  accType: "Credit Card//HELOC",
+  balance: "0.00",
 };
 const MakeAccount = () => {
   const navigate = useNavigate();
@@ -30,7 +30,8 @@ const MakeAccount = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    createAccount();
+    const { accType, balance } = values;
+    createAccount(accType, balance);
     setTimeout(() => {
       navigate("/dashboard");
     }, 1000);
@@ -45,19 +46,19 @@ const MakeAccount = () => {
           {showAlert && <Alert />}
           <div className="has-account">
             <FormRowSelect
-              name="accountType"
+              name="accType"
               labelText="Account Type"
               list={["Credit Card/HELOC", "Car Loan", "Home Loan"]}
-              value={values.accountType}
+              value={values.accType}
               handleChange={handleChange}
             />
             <FormInput
               type="number"
-              name="newAccountBalance"
+              name="balance"
               labelText="New Account Balance"
               step=".01"
               min="0"
-              value={values.newAccountBalance}
+              value={values.balance}
               handleChange={handleChange}
             />
             <SubmitButton text="Create Account" isLoading={isLoading} />

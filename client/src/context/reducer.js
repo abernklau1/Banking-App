@@ -96,7 +96,8 @@ const reducer = (state, action) => {
     return {
       ...state,
       isLoading: false,
-      account: action.payload.account,
+      user: action.payload.user,
+      accounts: action.payload.user.accounts,
       showAlert: true,
       alertType: "success",
       alertText: "Account Created! Redirecting...",
@@ -143,7 +144,7 @@ const reducer = (state, action) => {
       isLoading: false,
       showAlert: true,
       alertType: "danger",
-      alertText: action.payload.alertText,
+      alertText: action.payload.msg,
     };
   }
 

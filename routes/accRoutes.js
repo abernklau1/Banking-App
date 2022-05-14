@@ -8,6 +8,7 @@ import {
 const router = express.Router();
 
 router.route("/").patch(createAccount).get(getAccounts);
+
 router.route("/transfer").patch(transferMoney);
 
 export default router;

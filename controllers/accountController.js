@@ -12,9 +12,7 @@ const createAccount = async (req, res) => {
 
   await user.save();
 
-  res
-    .status(StatusCodes.CREATED)
-    .json({ accountCreated: user.accounts.at(-1) });
+  res.status(StatusCodes.CREATED).json({ user });
 };
 
 const getAccounts = async (req, res) => {
