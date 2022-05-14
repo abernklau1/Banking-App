@@ -18,7 +18,6 @@ const Accounts = () => {
           );
         })
         .map(([key, value], index) => {
-          console.log(value.accType);
           return (
             <AccountTable
               account={{
