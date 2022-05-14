@@ -31,7 +31,14 @@ const getAccounts = async (req, res) => {
 const transferMoney = async (req, res) => {
   // pull value from user input
   let { toAccount, amount } = req.body;
+  let i;
   amount = parseFloat(amount);
+  toAccount = [...toAccount].map((char, index) => {
+    if (char === "(") {
+      i = index;
+      return toAccount.substring(0, index - 1);
+    }
+  })[i];
   // if no value throw new bad request error
   if (!toAccount || !amount) {
     throw new BadRequestError("Please provide all values");
@@ -76,6 +83,7 @@ const transferMoney = async (req, res) => {
     if (savings.balance - amount < 5) {
       throw new BadRequestError("This amount is too great");
     }
+
     savings.balance = parseFloat((savings.balance - amount).toFixed(2));
     checking.balance = parseFloat((checking.balance + amount).toFixed(2));
   }

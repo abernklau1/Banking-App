@@ -1,9 +1,9 @@
 import { useAppContext } from "../../context/appContext";
 import { MainAccountTable, AccountTable } from "../../components/index";
-//import { useEffect } from "react";
 
 const Accounts = () => {
   const { accounts } = useAppContext();
+
   return (
     <section className="account-sections content-container">
       <header>
@@ -18,6 +18,7 @@ const Accounts = () => {
           );
         })
         .map(([key, value], index) => {
+          console.log(value);
           return (
             <AccountTable
               account={{

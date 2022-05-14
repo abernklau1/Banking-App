@@ -3,10 +3,10 @@ import {
   SubmitButton,
   Alert,
   FormRowSelect,
-  MainAccountTable,
 } from "../../components/index";
 import { useAppContext } from "../../context/appContext";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const initialState = {
   account: "Prime Share Account",
@@ -15,7 +15,15 @@ const initialState = {
 
 const Transfer = () => {
   const [values, setValues] = useState(initialState);
-  const { showAlert, displayAlert, transferMoney } = useAppContext();
+  const {
+    showAlert,
+    displayAlert,
+    transferMoney,
+    transferred,
+    transferNavigate,
+    accounts,
+  } = useAppContext();
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setValues({
@@ -36,12 +44,20 @@ const Transfer = () => {
     transferMoney({ details, alertText: "Transfer Successful!" });
   };
 
+  useEffect(() => {
+    if (transferred) {
+      setTimeout(() => {
+        navigate("/dashboard");
+      }, 1000);
+      transferNavigate();
+    }
+  }, [navigate, transferred, transferNavigate]);
+
   return (
     <section className="account-sections content-container">
       <header>
         <h2>Transfer</h2>
       </header>
-      <MainAccountTable />
       <div className="transfers">
         <form className="form-outline" onSubmit={handleSubmit}>
           {showAlert && <Alert />}
@@ -50,7 +66,10 @@ const Transfer = () => {
             name="account"
             value={values.account}
             handleChange={handleChange}
-            list={["Prime Share Account", "Checking"]}
+            list={[
+              `Prime Share Account (Available: $${accounts[0].balance - 5})`,
+              `Basic Checking (Available: $${accounts[1].balance - 5})`,
+            ]}
           />
           <FormInput
             type="number"

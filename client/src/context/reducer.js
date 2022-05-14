@@ -16,6 +16,7 @@ import {
   CLEAR_VALUES,
   GET_ACCOUNT_BEGIN,
   GET_ACCOUNT_SUCCESS,
+  TRANSFER_NAVIGATE,
 } from "./actions";
 
 import { initialState } from "./appContext";
@@ -119,7 +120,11 @@ const reducer = (state, action) => {
   }
 
   if (action.type === GET_ACCOUNT_SUCCESS) {
-    return { ...state, isLoading: false, account: action.payload.account };
+    return {
+      ...state,
+      isLoading: false,
+      accounts: action.payload.accounts,
+    };
   }
 
   if (action.type === TRANSFER_BEGIN) {
@@ -132,6 +137,7 @@ const reducer = (state, action) => {
       isLoading: false,
       user: action.payload.user,
       accounts: action.payload.user.accounts,
+      transferred: true,
       showAlert: true,
       alertType: "success",
       alertText: "Transfer Successful!",
@@ -151,6 +157,14 @@ const reducer = (state, action) => {
   if (action.type === CLEAR_VALUES) {
     return { ...state };
   }
+
+  if (action.type === TRANSFER_NAVIGATE) {
+    return {
+      ...state,
+      transferred: undefined,
+    };
+  }
+
   throw new Error(`no such action: ${action.type}`);
 };
 

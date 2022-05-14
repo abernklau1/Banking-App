@@ -8,7 +8,7 @@ import {
 } from "../../components";
 import { useAppContext } from "../../context/appContext";
 const initialValues = {
-  accType: "Credit Card//HELOC",
+  accType: "Credit Card/HELOC",
   balance: "0.00",
 };
 const MakeAccount = () => {

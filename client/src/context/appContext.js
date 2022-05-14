@@ -17,6 +17,7 @@ import {
   TRANSFER_ERROR,
   TRANSFER_SUCCESS,
   CLEAR_VALUES,
+  TRANSFER_NAVIGATE,
 } from "./actions";
 import reducer from "./reducer";
 import axios from "axios";
@@ -41,6 +42,7 @@ const initialState = {
   showSidebar: false,
   routingNumber: "#00000000",
   accounts: user ? user.accounts : null,
+  transferred: undefined,
 };
 
 const AppContext = createContext();
@@ -175,14 +177,15 @@ const AppProvider = ({ children }) => {
     }
   };
 
-  const getAccount = async () => {
+  const getAccounts = async () => {
     dispatch({ type: GET_ACCOUNT_BEGIN });
     try {
       const {
-        data: { user },
+        data: {
+          accounts: { accounts },
+        },
       } = await authFetch("/user-account");
-      dispatch({ type: GET_ACCOUNT_SUCCESS, payload: { user } });
-      addUserToLocalStorage({ user });
+      dispatch({ type: GET_ACCOUNT_SUCCESS, payload: { accounts } });
     } catch (error) {
       logoutUser();
     }
@@ -199,6 +202,7 @@ const AppProvider = ({ children }) => {
         toAccount,
         amount,
       });
+      console.log(user);
       dispatch({ type: TRANSFER_SUCCESS, payload: { user } });
       addUserToLocalStorage({ user });
     } catch (error) {
@@ -208,6 +212,10 @@ const AppProvider = ({ children }) => {
       });
     }
     clearAlert();
+  };
+
+  const transferNavigate = () => {
+    dispatch({ type: TRANSFER_NAVIGATE });
   };
   return (
     <AppContext.Provider
@@ -219,9 +227,10 @@ const AppProvider = ({ children }) => {
         logoutUser,
         toggleSidebar,
         createAccount,
-        getAccount,
+        getAccounts,
         transferMoney,
         clearValues,
+        transferNavigate,
       }}
     >
       {children}

@@ -1,4 +1,5 @@
 import { TableHead, TableRow } from "./index";
+import TotalRow from "./TotalRow";
 
 const AccountTable = (props) => {
   return (
@@ -19,6 +20,7 @@ const AccountTable = (props) => {
               );
             }
           })}
+          {props.accountTotal && <TotalRow total={props.accountTotal} />}
         </tbody>
       </table>
     </div>
