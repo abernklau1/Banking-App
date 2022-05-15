@@ -2,7 +2,7 @@ const TotalRow = ({ total }) => {
   return (
     <tr>
       <td colSpan="2" style={{ textAlign: "right" }}>
-        <strong>Total</strong>
+        <strong>Total Insured</strong>
       </td>
       <td className="balance">${total}</td>
     </tr>

@@ -1,5 +1,9 @@
 import { useAppContext } from "../../context/appContext";
-import { MainAccountTable, AccountTable } from "../../components/index";
+import {
+  MainAccountTable,
+  AccountTable,
+  SearchBar,
+} from "../../components/index";
 
 const Accounts = () => {
   const { accounts } = useAppContext();
@@ -8,6 +12,7 @@ const Accounts = () => {
     <section className="account-sections content-container">
       <header>
         <h2>Accounts</h2>
+        <SearchBar />
       </header>
       <MainAccountTable />
       {Object.entries(accounts)

@@ -14,6 +14,7 @@ import TotalRow from "./TotalRow";
 import AccountTable from "./AccountTable";
 import FormRowSelect from "./FormRowSelect";
 import MainAccountTable from "./MainAccountTable";
+import SearchBar from "./SearchBar";
 
 export {
   Navbar,
@@ -32,4 +33,5 @@ export {
   AccountTable,
   FormRowSelect,
   MainAccountTable,
+  SearchBar,
 };
