@@ -21,7 +21,7 @@ import {
   HANDLE_CHANGE,
   CLEAR_SEARCH,
   CHANGE_PAGE,
-  SET_PAY_ACCOUNT,
+  //SET_PAY_ACCOUNT,
 } from "./actions";
 import reducer from "./reducer";
 import axios from "axios";
@@ -47,7 +47,7 @@ const initialState = {
   routingNumber: "#00000000",
   mainAccount: user ? user.mainAccount : null,
   accounts: [],
-  accType: "",
+  accType: "Credit Card/HELOC",
   accTypeList: ["Credit Card/HELOC", "Car Loan", "Home Loan"],
   balance: 0,
   transferred: undefined,
@@ -211,9 +211,9 @@ const AppProvider = ({ children }) => {
     clearAlert();
   };
 
-  const setPayAccount = (id) => {
-    dispatch({ type: SET_PAY_ACCOUNT, payload: { id } });
-  };
+  // const setPayAccount = (id) => {
+  //   dispatch({ type: SET_PAY_ACCOUNT, payload: { id } });
+  // };
 
   const transferMoney = async ({ details }) => {
     dispatch({ type: TRANSFER_BEGIN });
@@ -245,7 +245,7 @@ const AppProvider = ({ children }) => {
   };
 
   const clearSearch = () => {
-    dispatch({ type: CLEAR_SEARCH, payload: { user } });
+    dispatch({ type: CLEAR_SEARCH });
   };
 
   const changePage = (page) => {

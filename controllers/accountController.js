@@ -2,7 +2,6 @@ import User from "../schemas/User.js";
 import Account from "../schemas/Account.js";
 import { StatusCodes } from "http-status-codes";
 import { BadRequestError, NotFoundError } from "../errors/index.js";
-import mongoose from "mongoose";
 
 const createAccount = async (req, res) => {
   const { accType, balance } = req.body;
@@ -100,34 +99,26 @@ const transferMoney = async (req, res) => {
   // pull value from user input
   let { toAccount, amount } = req.body;
   // if no value throw new bad request error
-  if (!toAccount || !amount) {
+
+  if (!toAccount || amount === "0.00") {
     throw new BadRequestError("Please provide all values");
   }
 
-  let i;
   amount = parseFloat(amount);
-  toAccount = [...toAccount].map((char, index) => {
-    if (char === "(") {
-      i = index;
-      return toAccount.substring(0, index - 1);
-    }
-  })[i];
 
   // check for account associate with user
   const userId = req.user.userId;
-  const { accounts } = await User.findOne({ _id: userId }).select(
-    "mainAccount"
-  );
+  const { mainAccount } = await User.findOne({ _id: userId });
 
   // if no account throw not found error
-  if (!accounts) {
+  if (!mainAccount) {
     throw new NotFoundError("Invalid Account");
   }
 
   let savings;
   let checking;
   // loop through accounts associated w/ user to find savings and checking accounts
-  Object.entries(accounts).map(([key, account]) => {
+  Object.entries(mainAccount).map(([key, account]) => {
     if (account.accType === "Prime Share Account") {
       savings = account;
     }
@@ -163,8 +154,8 @@ const transferMoney = async (req, res) => {
   const updatedUser = await Promise.all(
     accountsList.map(async (account) => {
       return await User.findOneAndUpdate(
-        { _id: userId, "accounts.accType": account.accType },
-        { $set: { "accounts.$.balance": account.balance } },
+        { _id: userId, "mainAccount.accType": account.accType },
+        { $set: { "mainAccount.$.balance": account.balance } },
         { new: true, runValidators: true }
       );
     })

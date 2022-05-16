@@ -66,10 +66,8 @@ const Transfer = () => {
             name="account"
             value={values.account}
             handleChange={handleChange}
-            list={[
-              `Prime Share Account (Available: $${mainAccount[0].balance - 5})`,
-              `Basic Checking (Available: $${mainAccount[1].balance - 5})`,
-            ]}
+            isTransfer={true}
+            list={[`Prime Share Account`, `Basic Checking`]}
           />
           <FormInput
             type="number"

@@ -1,4 +1,14 @@
-const FormRowSelect = ({ labelText, name, value, handleChange, list }) => {
+import { useAppContext } from "../context/appContext";
+
+const FormRowSelect = ({
+  labelText,
+  name,
+  value,
+  handleChange,
+  list,
+  isTransfer,
+}) => {
+  const { mainAccount } = useAppContext();
   return (
     <div className="form-row">
       <label htmlFor={name} className="form-label">
@@ -11,6 +21,13 @@ const FormRowSelect = ({ labelText, name, value, handleChange, list }) => {
         className="form-select"
       >
         {list.map((itemValue, index) => {
+          if (isTransfer) {
+            return (
+              <option key={index} value={itemValue}>
+                {itemValue + `(Available: $${mainAccount[index].balance})`}
+              </option>
+            );
+          }
           return (
             <option key={index} value={itemValue}>
               {itemValue}

@@ -154,7 +154,7 @@ const reducer = (state, action) => {
       ...state,
       isLoading: false,
       user: action.payload.user,
-      accounts: action.payload.user.accounts,
+      mainAccount: action.payload.user.mainAccount,
       transferred: true,
       showAlert: true,
       alertType: "success",
@@ -188,7 +188,7 @@ const reducer = (state, action) => {
   }
 
   if (action.type === CLEAR_SEARCH) {
-    return { ...state, search: "", accounts: action.payload.user.accounts };
+    return { ...state, search: "" };
   }
 
   if (action.type === CHANGE_PAGE) {
