@@ -21,6 +21,7 @@ import {
   HANDLE_CHANGE,
   CLEAR_SEARCH,
   CHANGE_PAGE,
+  SET_PAY_ACCOUNT,
 } from "./actions";
 import reducer from "./reducer";
 import axios from "axios";
@@ -31,7 +32,6 @@ const userLocation = localStorage.getItem("location");
 const signedIn = localStorage.getItem("signedIn");
 
 user = JSON.parse(user);
-const accounts = user ? user.accounts : null;
 
 const initialState = {
   isLoading: false,
@@ -45,12 +45,18 @@ const initialState = {
   showLogout: false,
   showSidebar: false,
   routingNumber: "#00000000",
-  accounts: accounts ? accounts : null,
+  mainAccount: user ? user.mainAccount : null,
+  accounts: [],
+  accType: "",
+  accTypeList: ["Credit Card/HELOC", "Car Loan", "Home Loan"],
+  balance: 0,
   transferred: undefined,
   search: "",
   page: 1,
   numOfPages: 1,
-  totalAccounts: accounts ? accounts.length : 2,
+  totalAccounts: 0,
+  isPaying: false,
+  payAccountId: "",
 };
 
 const AppContext = createContext();
@@ -135,7 +141,7 @@ const AppProvider = ({ children }) => {
           location,
           alertText,
           isSignedIn: true,
-          accounts: user.accounts,
+          mainAccount: user.mainAccount,
         },
       });
       addUserToLocalStorage({
@@ -166,14 +172,13 @@ const AppProvider = ({ children }) => {
     dispatch({ type: TOGGLE_SIDEBAR });
   };
 
-  const createAccount = async (accType, balance) => {
+  const createAccount = async () => {
     dispatch({ type: SETUP_ACCOUNT_BEGIN });
     try {
-      const {
-        data: { user },
-      } = await authFetch.patch(`/user-account`, { accType, balance });
-      dispatch({ type: SETUP_ACCOUNT_SUCCESS, payload: { user } });
-      addUserToLocalStorage({ user });
+      const { accType, balance } = state;
+      await authFetch.post(`/user-account`, { accType, balance });
+      dispatch({ type: SETUP_ACCOUNT_SUCCESS });
+      clearValues();
     } catch (error) {
       if (error.status === 401) return;
       dispatch({
@@ -181,6 +186,7 @@ const AppProvider = ({ children }) => {
         payload: { msg: error.response.data.msg },
       });
     }
+    clearAlert();
   };
 
   const getAccounts = async () => {
@@ -205,6 +211,10 @@ const AppProvider = ({ children }) => {
     clearAlert();
   };
 
+  const setPayAccount = (id) => {
+    dispatch({ type: SET_PAY_ACCOUNT, payload: { id } });
+  };
+
   const transferMoney = async ({ details }) => {
     dispatch({ type: TRANSFER_BEGIN });
     try {
@@ -215,7 +225,6 @@ const AppProvider = ({ children }) => {
         toAccount,
         amount,
       });
-      console.log(user);
       dispatch({ type: TRANSFER_SUCCESS, payload: { user } });
       addUserToLocalStorage({ user });
     } catch (error) {

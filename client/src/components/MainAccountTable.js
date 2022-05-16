@@ -2,12 +2,14 @@ import { useAppContext } from "../context/appContext";
 import AccountTable from "./AccountTable";
 
 const MainAccountTable = () => {
-  const { accounts } = useAppContext();
+  const { mainAccount } = useAppContext();
 
-  const savings = accounts[0];
-  const checking = accounts[1];
+  const savings = mainAccount[0];
+  const checking = mainAccount[1];
+  const total = parseFloat((savings.balance + checking.balance).toFixed(2));
   return (
     <AccountTable
+      header="Insured Accounts"
       savings={{
         account: "PRIME SHARE ACCOUNT",
         accountType: "Prime Share Account",
@@ -18,7 +20,7 @@ const MainAccountTable = () => {
         accountType: "Basic Checking",
         accountBalance: checking.balance,
       }}
-      accountTotal={savings.balance + checking.balance}
+      accountTotal={total}
     />
   );
 };

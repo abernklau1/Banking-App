@@ -1,5 +1,3 @@
-import { useNavigate } from "react-router-dom";
-import { useState } from "react";
 import {
   Alert,
   FormInput,
@@ -7,34 +5,33 @@ import {
   SubmitButton,
 } from "../../components";
 import { useAppContext } from "../../context/appContext";
-const initialValues = {
-  accType: "Credit Card/HELOC",
-  balance: "0.00",
-};
+
 const MakeAccount = () => {
-  const navigate = useNavigate();
-  const [values, setValues] = useState(initialValues);
   const {
     showAlert,
     isLoading,
+    displayAlert,
     user: { name },
     createAccount,
+    accType,
+    accTypeList,
+    balance,
+    handleChange,
   } = useAppContext();
-
-  const handleChange = (e) => {
-    setValues({
-      ...values,
-      [e.target.name]: e.target.value,
-    });
-  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const { accType, balance } = values;
-    createAccount(accType, balance);
-    setTimeout(() => {
-      navigate("/dashboard");
-    }, 1000);
+
+    if (!balance) {
+      displayAlert();
+      return;
+    }
+    createAccount();
+  };
+
+  const handleAccountInput = (e) => {
+    const { name, value } = e.target;
+    handleChange({ name, value });
   };
 
   return (
@@ -48,9 +45,9 @@ const MakeAccount = () => {
             <FormRowSelect
               name="accType"
               labelText="Account Type"
-              list={["Credit Card/HELOC", "Car Loan", "Home Loan"]}
-              value={values.accType}
-              handleChange={handleChange}
+              list={accTypeList}
+              value={accType}
+              handleChange={handleAccountInput}
             />
             <FormInput
               type="number"
@@ -58,8 +55,8 @@ const MakeAccount = () => {
               labelText="New Account Balance"
               step=".01"
               min="0"
-              value={values.balance}
-              handleChange={handleChange}
+              value={balance}
+              handleChange={handleAccountInput}
             />
             <SubmitButton text="Create Account" isLoading={isLoading} />
           </div>

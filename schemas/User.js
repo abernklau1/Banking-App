@@ -42,7 +42,7 @@ const UserSchema = new mongoose.Schema({
     type: String,
     length: 7,
   },
-  accounts: [
+  mainAccount: [
     {
       accType: {
         type: String,

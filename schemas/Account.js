@@ -9,6 +9,11 @@ const AccountSchema = new mongoose.Schema({
     type: Number,
     required: [true, "Please provide account balance"],
   },
+  createdBy: {
+    type: mongoose.Types.ObjectId,
+    ref: "User",
+    required: [true, "Please provide user"],
+  },
 });
 
-export default AccountSchema;
+export default mongoose.model("Account", AccountSchema);

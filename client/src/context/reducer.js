@@ -20,6 +20,7 @@ import {
   HANDLE_CHANGE,
   CLEAR_SEARCH,
   CHANGE_PAGE,
+  SET_PAY_ACCOUNT,
 } from "./actions";
 
 import { initialState } from "./appContext";
@@ -100,11 +101,9 @@ const reducer = (state, action) => {
     return {
       ...state,
       isLoading: false,
-      user: action.payload.user,
-      accounts: action.payload.user.accounts,
       showAlert: true,
       alertType: "success",
-      alertText: "Account Created! Redirecting...",
+      alertText: "New Account Created!",
     };
   }
 
@@ -129,6 +128,20 @@ const reducer = (state, action) => {
       accounts: action.payload.accounts,
       totalAccounts: action.payload.totalAccounts,
       numOfPages: action.payload.numOfPages,
+    };
+  }
+
+  if (action.type === SET_PAY_ACCOUNT) {
+    const account = state.accounts.find(
+      (account) => account._id === action.payload.id
+    );
+    const { _id, accType, balance } = account;
+    return {
+      ...state,
+      isPaying: true,
+      payAccountId: _id,
+      accType,
+      balance,
     };
   }
 

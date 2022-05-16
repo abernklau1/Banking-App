@@ -40,3 +40,6 @@ export const CLEAR_SEARCH = "CLEAR_SEARCH";
 
 // action to change pages on the accounts page of the dashboard
 export const CHANGE_PAGE = "CHANGE_PAGE";
+
+// actions to pay account
+export const SET_PAY_ACCOUNT = "SET_PAY_ACCOUNT";

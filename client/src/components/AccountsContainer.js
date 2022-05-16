@@ -1,11 +1,6 @@
 import React from "react";
 import { useAppContext } from "../context/appContext";
-import {
-  Loading,
-  MainAccountTable,
-  AccountTable,
-  PageBtnContainer,
-} from "./index";
+import { Loading, AccountTable, PageBtnContainer } from "./index";
 import { useEffect } from "react";
 const AccountsContainer = () => {
   const {
@@ -24,7 +19,7 @@ const AccountsContainer = () => {
   }, [page, search, numOfPages]);
 
   if (accounts.length === 0) {
-    return <h3>There are no accounts to display</h3>;
+    return <h3>No accounts to display...</h3>;
   }
 
   if (isLoading) {
@@ -33,13 +28,9 @@ const AccountsContainer = () => {
 
   return (
     <div>
-      {!search ? (
-        <MainAccountTable />
-      ) : (
-        <h3 class="accounts-found">
-          {totalAccounts} account{accounts.length > 1 && "s"} found
-        </h3>
-      )}
+      <h3 className="accounts-found">
+        {totalAccounts} account{accounts.length > 1 && "s"} found
+      </h3>
       {Object.entries(accounts)
         .filter(([key, value]) => {
           return (
@@ -60,7 +51,7 @@ const AccountsContainer = () => {
             />
           );
         })}
-      {numOfPages > 1 && <PageBtnContainer />}{" "}
+      {numOfPages > 1 && <PageBtnContainer />}
     </div>
   );
 };

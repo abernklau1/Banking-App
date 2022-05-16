@@ -5,11 +5,15 @@ const AccountTable = (props) => {
   return (
     <div className="account-container">
       <table>
-        <TableHead col1="Account" col2="Account Type" col3="Balance" />
+        <TableHead
+          col1={props.header ? "Insured Accounts" : "Account"}
+          col2="Account Type"
+          col3="Balance"
+        />
         <tbody>
           {/* eslint-disable-next-line array-callback-return */}
           {Object.entries(props).map(([key, value], index) => {
-            if (key !== "accountTotal") {
+            if (key !== "accountTotal" && key !== "header") {
               return (
                 <TableRow
                   col1={value.account}

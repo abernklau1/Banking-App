@@ -26,12 +26,12 @@ const PageBtnContainer = () => {
   };
 
   return (
-    <section>
+    <section className="page-btn-container">
       <button className="prev-btn" onClick={prevPage}>
         <HiChevronDoubleLeft />
         Prev
       </button>
-      <div className="btn-container">
+      <div className="pageBtn-container">
         {pages.map((pageNumber) => {
           return (
             <button

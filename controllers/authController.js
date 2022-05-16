@@ -45,12 +45,11 @@ const register = async (req, res) => {
     email,
     password,
     accNumber,
-    accounts: [
+    mainAccount: [
       { accType: "Prime Share Account", balance: savings },
       { accType: "Basic Checking", balance: checking },
     ],
   });
-
   const token = user.createJWT();
   res.status(StatusCodes.CREATED).json({
     user: {
@@ -59,7 +58,7 @@ const register = async (req, res) => {
       location: user.location,
       name: user.name,
       accNumber: user.accNumber,
-      accounts: user.accounts,
+      mainAccount: user.mainAccount,
     },
     token,
     location: user.location,

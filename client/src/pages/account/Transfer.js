@@ -21,7 +21,7 @@ const Transfer = () => {
     transferMoney,
     transferred,
     transferNavigate,
-    accounts,
+    mainAccount,
   } = useAppContext();
   const navigate = useNavigate();
 
@@ -67,8 +67,8 @@ const Transfer = () => {
             value={values.account}
             handleChange={handleChange}
             list={[
-              `Prime Share Account (Available: $${accounts[0].balance - 5})`,
-              `Basic Checking (Available: $${accounts[1].balance - 5})`,
+              `Prime Share Account (Available: $${mainAccount[0].balance - 5})`,
+              `Basic Checking (Available: $${mainAccount[1].balance - 5})`,
             ]}
           />
           <FormInput
