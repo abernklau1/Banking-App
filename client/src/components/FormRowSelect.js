@@ -24,7 +24,7 @@ const FormRowSelect = ({
           if (isTransfer) {
             return (
               <option key={index} value={itemValue}>
-                {itemValue + `(Available: $${mainAccount[index].balance})`}
+                {itemValue + ` (Available: $${mainAccount[index].balance})`}
               </option>
             );
           }
