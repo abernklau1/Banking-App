@@ -6,7 +6,7 @@
   --box-shadow-3: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   --box-shadow-4: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
     rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
-  --blue: #2155CD;
+  --blue: #2155cd;
   /* #2932e2 */
   --purple: #9499f1;
   --dark-purple: #7f84ee;
@@ -411,7 +411,6 @@ footer {
   font-weight: 500;
 }
 
-
 /* ACCOUNT */
 
 .account-container,
@@ -420,7 +419,6 @@ footer {
   text-align: left;
   margin: auto;
   padding-bottom: 10px;
-
 }
 
 .account-container h2 {
@@ -478,7 +476,7 @@ table tbody tr:last-of-type {
   position: relative;
   padding-bottom: 10px;
   top: 10px;
-  }
+}
 
 // first use of scss
 
@@ -489,9 +487,9 @@ table tbody tr:last-of-type {
     z-index: 1;
     width: 25px;
     height: 25px;
-    transition: all .25s ease-in .25s;
+    transition: all 0.25s ease-in 0.25s;
     color: transparent;
-    font-size: .9rem;
+    font-size: 0.9rem;
     line-height: 25px;
 
     &:hover {
@@ -516,7 +514,11 @@ table tbody tr:last-of-type {
         &::before {
           width: 2px;
           opacity: 0;
-          transition: all .25s ease-in;
+          transition: all 0.25s ease-in;
+        }
+        + button {
+          transform: translateX(-25px);
+          opacity: 1;
         }
       }
     }
@@ -527,11 +529,11 @@ table tbody tr:last-of-type {
       top: 0;
       width: 25px;
       height: 25px;
-      transition: all .25s ease-in .25s;
+      transition: all 0.25s ease-in 0.25s;
       border-radius: 25px;
       left: 0;
       &::before {
-        transition: all .25s ease-in .5s;
+        transition: all 0.25s ease-in 0.5s;
         transform-origin: left top;
         content: "";
         position: absolute;
@@ -540,10 +542,50 @@ table tbody tr:last-of-type {
         border-radius: 5px;
         background: var(--blue);
         transform: rotate(45deg) translate(26px, -2px);
-
+      }
+      + button {
+        opacity: 0;
+        z-index: 0;
+        position: absolute;
+        top: 2.5px;
+        width: 20px;
+        height: 20px;
+        transition: all 0.25s ease-in 0.25s;
+        cursor: pointer;
+        background: transparent;
+        border: none;
+        border-radius: 5px;
+        &::before {
+          transition: all 0.25s ease-in 0.5s;
+          transform-origin: left top;
+          content: "";
+          position: absolute;
+          width: 20px;
+          height: 2px;
+          border-radius: 5px;
+          background: var(--blue);
+          transform: rotate(45deg) translate(-10px, -1px);
+        }
+        &::after {
+          transition: all 0.25s ease-in 0.5s;
+          transform-origin: left top;
+          content: "";
+          position: absolute;
+          width: 20px;
+          height: 2px;
+          border-radius: 5px;
+          background: var(--blue);
+          transform: rotate(135deg) translate(-10px, -1px);
+        }
       }
     }
   }
+}
+
+.accounts-found {
+  text-align: left;
+  width: 800px;
+  margin: auto;
 }
 
 /* ALERTS */
@@ -567,6 +609,24 @@ table tbody tr:last-of-type {
 .alert-danger {
   border-color: var(--danger-border);
   background-color: var(--danger-bkg);
+}
+
+@keyframes spinner {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loading {
+  width: 6rem;
+  height: 6rem;
+  border: 5px solid var(--light-gray);
+  border-radius: 50%;
+  border-top-color: var(--blue);
+  animation: spinner 2s linear infinite;
+}
+.loading-center {
+  margin: 0 auto;
 }
 
 /* ERROR PAGE */
@@ -706,7 +766,22 @@ table tbody tr:last-of-type {
 
   /* ACCOUNT */
   .account-container,
-  .account-sections header {
+  .account-sections header,
+  .accounts-found {
     width: 600px;
+  }
+}
+
+@media (max-width: 630px) {
+  .account-container,
+  .account-sections header,
+  .accounts-found {
+    width: 400px;
+  }
+
+  .dash-list {
+    margin-left: 2.3rem;
+    flex-wrap: wrap;
+    width: 250px;
   }
 }

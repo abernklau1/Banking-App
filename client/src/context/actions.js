@@ -32,5 +32,11 @@ export const TRANSFER_SUCCESS = "TRANSFER_SUCCESS";
 export const TRANSFER_ERROR = "TRANSFER_ERROR";
 export const TRANSFER_NAVIGATE = "TRANSFER_NAVIGATE";
 
-// action to handle change of select form input
+// action to handle change of search input
 export const HANDLE_CHANGE = "HANDLE_CHANGE";
+
+// action to clear the search input
+export const CLEAR_SEARCH = "CLEAR_SEARCH";
+
+// action to change pages on the accounts page of the dashboard
+export const CHANGE_PAGE = "CHANGE_PAGE";

@@ -18,6 +18,9 @@ import {
   TRANSFER_SUCCESS,
   CLEAR_VALUES,
   TRANSFER_NAVIGATE,
+  HANDLE_CHANGE,
+  CLEAR_SEARCH,
+  CHANGE_PAGE,
 } from "./actions";
 import reducer from "./reducer";
 import axios from "axios";
@@ -28,6 +31,7 @@ const userLocation = localStorage.getItem("location");
 const signedIn = localStorage.getItem("signedIn");
 
 user = JSON.parse(user);
+const accounts = user ? user.accounts : null;
 
 const initialState = {
   isLoading: false,
@@ -41,8 +45,12 @@ const initialState = {
   showLogout: false,
   showSidebar: false,
   routingNumber: "#00000000",
-  accounts: user ? user.accounts : null,
+  accounts: accounts ? accounts : null,
   transferred: undefined,
+  search: "",
+  page: 1,
+  numOfPages: 1,
+  totalAccounts: accounts ? accounts.length : 2,
 };
 
 const AppContext = createContext();
@@ -119,8 +127,6 @@ const AppProvider = ({ children }) => {
         data: { user, token, location },
       } = await axios.post(`/api/v1/auth/${endPoint}`, currentUser);
 
-      console.log(user);
-
       dispatch({
         type: SETUP_USER_SUCCESS,
         payload: {
@@ -178,16 +184,23 @@ const AppProvider = ({ children }) => {
   };
 
   const getAccounts = async () => {
+    const { page, search } = state;
+    let url = `/user-account?page=${page}`;
+    if (search) {
+      url = url + `&search=${search}`;
+    }
     dispatch({ type: GET_ACCOUNT_BEGIN });
     try {
       const {
-        data: {
-          accounts: { accounts },
-        },
-      } = await authFetch("/user-account");
-      dispatch({ type: GET_ACCOUNT_SUCCESS, payload: { accounts } });
+        data: { accounts, numOfPages, totalAccounts },
+      } = await authFetch(url);
+
+      dispatch({
+        type: GET_ACCOUNT_SUCCESS,
+        payload: { accounts, totalAccounts, numOfPages },
+      });
     } catch (error) {
-      logoutUser();
+      //logoutUser();
     }
     clearAlert();
   };
@@ -217,6 +230,18 @@ const AppProvider = ({ children }) => {
   const transferNavigate = () => {
     dispatch({ type: TRANSFER_NAVIGATE });
   };
+
+  const handleChange = ({ name, value }) => {
+    dispatch({ type: HANDLE_CHANGE, payload: { name, value } });
+  };
+
+  const clearSearch = () => {
+    dispatch({ type: CLEAR_SEARCH, payload: { user } });
+  };
+
+  const changePage = (page) => {
+    dispatch({ type: CHANGE_PAGE, payload: { page } });
+  };
   return (
     <AppContext.Provider
       value={{
@@ -231,6 +256,9 @@ const AppProvider = ({ children }) => {
         transferMoney,
         clearValues,
         transferNavigate,
+        handleChange,
+        clearSearch,
+        changePage,
       }}
     >
       {children}

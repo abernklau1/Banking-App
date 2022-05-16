@@ -15,6 +15,9 @@ import AccountTable from "./AccountTable";
 import FormRowSelect from "./FormRowSelect";
 import MainAccountTable from "./MainAccountTable";
 import SearchBar from "./SearchBar";
+import Loading from "./Loading";
+import PageBtnContainer from "./PageBtnContainer";
+import AccountsContainer from "./AccountsContainer";
 
 export {
   Navbar,
@@ -34,4 +37,7 @@ export {
   FormRowSelect,
   MainAccountTable,
   SearchBar,
+  Loading,
+  PageBtnContainer,
+  AccountsContainer,
 };

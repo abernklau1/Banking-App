@@ -17,6 +17,9 @@ import {
   GET_ACCOUNT_BEGIN,
   GET_ACCOUNT_SUCCESS,
   TRANSFER_NAVIGATE,
+  HANDLE_CHANGE,
+  CLEAR_SEARCH,
+  CHANGE_PAGE,
 } from "./actions";
 
 import { initialState } from "./appContext";
@@ -124,6 +127,8 @@ const reducer = (state, action) => {
       ...state,
       isLoading: false,
       accounts: action.payload.accounts,
+      totalAccounts: action.payload.totalAccounts,
+      numOfPages: action.payload.numOfPages,
     };
   }
 
@@ -163,6 +168,18 @@ const reducer = (state, action) => {
       ...state,
       transferred: undefined,
     };
+  }
+
+  if (action.type === HANDLE_CHANGE) {
+    return { ...state, page: 1, [action.payload.name]: action.payload.value };
+  }
+
+  if (action.type === CLEAR_SEARCH) {
+    return { ...state, search: "", accounts: action.payload.user.accounts };
+  }
+
+  if (action.type === CHANGE_PAGE) {
+    return { ...state, page: action.payload.page };
   }
 
   throw new Error(`no such action: ${action.type}`);

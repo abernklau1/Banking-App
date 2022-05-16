@@ -1,6 +1,7 @@
 import User from "../schemas/User.js";
 import { StatusCodes } from "http-status-codes";
 import { BadRequestError, NotFoundError } from "../errors/index.js";
+import mongoose from "mongoose";
 
 const createAccount = async (req, res) => {
   const { accType, balance } = req.body;
@@ -16,16 +17,56 @@ const createAccount = async (req, res) => {
 };
 
 const getAccounts = async (req, res) => {
-  // find account created by said user
-  const userId = req.user.userId;
-  const accounts = await User.findOne({ userId }).select("accounts");
+  // create variables for search params
+  let { search } = req.query;
+  const queryList = [{ _id: mongoose.Types.ObjectId(req.user.userId) }];
+  let accounts;
 
-  // throw not found error if that is the case
-  if (!accounts) {
-    throw new NotFoundError(`No account associated with user: ${userId}`);
+  if (search) {
+    search = search.toLowerCase();
+    if (
+      "prime share account".startsWith(search) ||
+      "basic checking".startsWith(search) ||
+      "credit card/heloc".startsWith(search) ||
+      "car loan".startsWith(search) ||
+      "home loan".startsWith(search)
+    ) {
+      queryList.push({ "accounts.accType": { $regex: search, $options: "i" } });
+    } else {
+      res
+        .status(StatusCodes.OK)
+        .json({ accounts: [], totalAccounts: 0, numOfPages: 1 });
+    }
   }
 
-  res.status(StatusCodes.OK).json({ accounts });
+  let result = User.aggregate([
+    { $unwind: "$accounts" },
+    {
+      $match: {
+        $and: queryList,
+      },
+    },
+    {
+      $group: {
+        _id: "$_id",
+        accounts: { $push: "$accounts" },
+      },
+    },
+  ]);
+
+  // setup pagination
+  const page = Number(req.query.page) || 1;
+  const limit = Number(req.query.limit) || 5;
+  const skip = (page - 1) * limit;
+
+  result = result.skip(skip).limit(limit);
+
+  accounts = await result;
+  const totalAccounts = accounts ? accounts[0].accounts.length : 0;
+  accounts = accounts[0].accounts;
+  const numOfPages = Math.ceil(totalAccounts / limit);
+
+  res.status(StatusCodes.OK).json({ accounts, totalAccounts, numOfPages });
 };
 
 const transferMoney = async (req, res) => {
