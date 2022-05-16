@@ -13,10 +13,6 @@ const SearchBar = () => {
     clearSearch();
   };
 
-  const blur = () => {
-    clearSearch();
-  };
-
   return (
     <form>
       <section className="search-container">
@@ -27,7 +23,6 @@ const SearchBar = () => {
             value={search}
             onChange={handleSearch}
             autoComplete="off"
-            onBlur={blur}
           />
           <span></span>
           <button type="submit" onClick={handleSubmit}></button>

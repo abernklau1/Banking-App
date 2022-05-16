@@ -46,7 +46,7 @@ const getAccounts = async (req, res) => {
 
   // setup pagination
   const page = Number(req.query.page) || 1;
-  const limit = Number(req.query.limit) || 4;
+  const limit = Number(req.query.limit) || 3;
   const skip = (page - 1) * limit;
 
   result = result.skip(skip).limit(limit);
