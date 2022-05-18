@@ -1,5 +1,4 @@
-import { TableHead, TableRow } from "./index";
-import TotalRow from "./TotalRow";
+import { TableHead, TableRow, TotalRow } from "./index";
 
 const AccountTable = (props) => {
   return (
@@ -14,13 +13,17 @@ const AccountTable = (props) => {
           {/* eslint-disable-next-line array-callback-return */}
           {Object.entries(props).map(([key, value], index) => {
             if (key !== "accountTotal" && key !== "header") {
+              console.log(value.account);
               return (
-                <TableRow
-                  col1={value.account}
-                  col2={value.accountType}
-                  col3={value.accountBalance}
-                  key={index}
-                />
+                <>
+                  <TableRow
+                    col1={value.account}
+                    col2={value.accountType}
+                    col3={value.accountBalance}
+                    key={index}
+                  />
+                  {!props.accountTotal && <TotalRow id={value._id} />}
+                </>
               );
             }
           })}

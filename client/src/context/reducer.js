@@ -20,7 +20,7 @@ import {
   HANDLE_CHANGE,
   CLEAR_SEARCH,
   CHANGE_PAGE,
-  SET_PAY_ACCOUNT,
+  SET_MAKE_PAYMENT,
 } from "./actions";
 
 import { initialState } from "./appContext";
@@ -131,7 +131,7 @@ const reducer = (state, action) => {
     };
   }
 
-  if (action.type === SET_PAY_ACCOUNT) {
+  if (action.type === SET_MAKE_PAYMENT) {
     const account = state.accounts.find(
       (account) => account._id === action.payload.id
     );

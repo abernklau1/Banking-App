@@ -21,7 +21,7 @@ import {
   HANDLE_CHANGE,
   CLEAR_SEARCH,
   CHANGE_PAGE,
-  //SET_PAY_ACCOUNT,
+  SET_MAKE_PAYMENT,
 } from "./actions";
 import reducer from "./reducer";
 import axios from "axios";
@@ -57,6 +57,7 @@ const initialState = {
   totalAccounts: 0,
   isPaying: false,
   payAccountId: "",
+  payment: 0,
 };
 
 const AppContext = createContext();
@@ -211,9 +212,11 @@ const AppProvider = ({ children }) => {
     clearAlert();
   };
 
-  // const setPayAccount = (id) => {
-  //   dispatch({ type: SET_PAY_ACCOUNT, payload: { id } });
-  // };
+  const setMakePayment = (id) => {
+    dispatch({ type: SET_MAKE_PAYMENT, payload: { id } });
+  };
+
+  const makePayment = () => {};
 
   const transferMoney = async ({ details }) => {
     dispatch({ type: TRANSFER_BEGIN });
@@ -268,6 +271,8 @@ const AppProvider = ({ children }) => {
         handleChange,
         clearSearch,
         changePage,
+        setMakePayment,
+        makePayment,
       }}
     >
       {children}

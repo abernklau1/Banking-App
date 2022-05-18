@@ -42,4 +42,4 @@ export const CLEAR_SEARCH = "CLEAR_SEARCH";
 export const CHANGE_PAGE = "CHANGE_PAGE";
 
 // actions to pay account
-export const SET_PAY_ACCOUNT = "SET_PAY_ACCOUNT";
+export const SET_MAKE_PAYMENT = "SET_MAKE_PAYMENT";

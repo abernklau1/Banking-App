@@ -639,6 +639,13 @@ table tbody tr:last-of-type {
   background: var(--blue);
   color: white;
 }
+
+.pay-btn {
+  border-radius: 5px;
+  font-size: 0.8rem;
+  padding: 5px;
+  line-height: 2;
+}
 /* ALERTS */
 
 .alert {
