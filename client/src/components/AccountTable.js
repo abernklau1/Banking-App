@@ -1,33 +1,31 @@
 import { TableHead, TableRow, TotalRow } from "./index";
 
-const AccountTable = (props) => {
+const AccountTable = ({ account1, header, accountTotal, account2 }) => {
   return (
     <div className="account-container">
       <table>
         <TableHead
-          col1={props.header ? "Insured Accounts" : "Account"}
+          col1={header ? "Insured Accounts" : "Account"}
           col2="Account Type"
           col3="Balance"
         />
         <tbody>
-          {/* eslint-disable-next-line array-callback-return */}
-          {Object.entries(props).map(([key, value], index) => {
-            if (key !== "accountTotal" && key !== "header") {
-              console.log(value.account);
-              return (
-                <>
-                  <TableRow
-                    col1={value.account}
-                    col2={value.accountType}
-                    col3={value.accountBalance}
-                    key={index}
-                  />
-                  {!props.accountTotal && <TotalRow id={value._id} />}
-                </>
-              );
-            }
-          })}
-          {props.accountTotal && <TotalRow total={props.accountTotal} />}
+          <TableRow
+            col1={account1.accType}
+            col2={account1.accType}
+            col3={account1.balance}
+            key={account1._id}
+          />
+          {!accountTotal && <TotalRow id={account1._id} />}
+          {account2 && (
+            <TableRow
+              col1={account2.accType}
+              col2={account2.accType}
+              col3={account2.balance}
+              key={account2._id}
+            />
+          )}
+          {accountTotal && <TotalRow total={accountTotal} />}
         </tbody>
       </table>
     </div>

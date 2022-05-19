@@ -205,9 +205,8 @@ const AppProvider = ({ children }) => {
     dispatch({ type: GET_ACCOUNT_BEGIN });
     try {
       const {
-        data: { accounts, numOfPages, totalAccounts },
+        data: { accounts, totalAccounts, numOfPages },
       } = await authFetch(url);
-
       dispatch({
         type: GET_ACCOUNT_SUCCESS,
         payload: { accounts, totalAccounts, numOfPages },
@@ -236,6 +235,7 @@ const AppProvider = ({ children }) => {
         payload: { msg: error.response.data.msg },
       });
     }
+    clearAlert();
   };
 
   const deleteAccount = async () => {
@@ -249,6 +249,7 @@ const AppProvider = ({ children }) => {
         payload: { msg: error.response.data.msg },
       });
     }
+    clearAlert();
   };
 
   const transferMoney = async ({ details }) => {

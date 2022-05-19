@@ -10,15 +10,13 @@ const MainAccountTable = () => {
   return (
     <AccountTable
       header="Insured Accounts"
-      savings={{
-        account: "PRIME SHARE ACCOUNT",
-        accountType: "Prime Share Account",
-        accountBalance: savings.balance,
+      account1={{
+        accType: "Prime Share Account",
+        balance: savings.balance,
       }}
-      checking={{
-        account: "BASIC CHECKING",
-        accountType: "Basic Checking",
-        accountBalance: checking.balance,
+      account2={{
+        accType: "Basic Checking",
+        balance: checking.balance,
       }}
       accountTotal={total}
     />

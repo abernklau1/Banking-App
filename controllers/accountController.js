@@ -2,6 +2,7 @@ import User from "../schemas/User.js";
 import Account from "../schemas/Account.js";
 import { StatusCodes } from "http-status-codes";
 import { BadRequestError, NotFoundError } from "../errors/index.js";
+import checkPermissions from "../utils/checkPermissions.js";
 
 const createAccount = async (req, res) => {
   const { accType, balance } = req.body;
@@ -53,8 +54,8 @@ const getAccounts = async (req, res) => {
   result = result.skip(skip).limit(limit);
 
   const accounts = await result;
-  const totalAccounts = await Account.countDocuments(queryObject);
 
+  const totalAccounts = await Account.countDocuments(queryObject);
   const numOfPages = Math.ceil(totalAccounts / limit);
 
   res.status(StatusCodes.OK).json({ accounts, totalAccounts, numOfPages });

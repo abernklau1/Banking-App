@@ -32,16 +32,7 @@ const AccountsContainer = () => {
         {totalAccounts} account{accounts.length > 1 && "s"} found
       </h3>
       {accounts.map((account) => {
-        return (
-          <AccountTable
-            account={{
-              account: account.accType,
-              accountType: account.accType,
-              accountBalance: account.balance,
-            }}
-            key={account._id}
-          />
-        );
+        return <AccountTable account1={account} key={account._id} />;
       })}
       {numOfPages > 1 && <PageBtnContainer />}
     </div>

@@ -138,7 +138,7 @@ const reducer = (state, action) => {
   }
 
   if (action.type === SET_MAKE_PAYMENT) {
-    const account = state.accounts.filter(
+    const account = state.accounts.find(
       (account) => account._id === action.payload.id
     );
     const { _id, accType, balance } = account;
