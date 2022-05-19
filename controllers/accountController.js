@@ -18,7 +18,6 @@ const createAccount = async (req, res) => {
 
 const deleteAccount = async (req, res) => {
   const { id: accountId } = req.params;
-  console.log(req.params);
   const account = await Account.findOne({ _id: accountId });
 
   if (!accountId) {

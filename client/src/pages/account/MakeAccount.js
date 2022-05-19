@@ -24,7 +24,6 @@ const MakeAccount = () => {
     makePayment,
     payment,
     deleteAccount,
-    payAccountId,
   } = useAppContext();
 
   const navigate = useNavigate();
@@ -43,7 +42,6 @@ const MakeAccount = () => {
 
     if (isPaying && deleting) {
       deleteAccount();
-      console.log(payAccountId);
       return;
     } else if (isPaying) {
       makePayment();
