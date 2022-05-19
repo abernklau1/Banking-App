@@ -646,6 +646,18 @@ table tbody tr:last-of-type {
   padding: 5px;
   line-height: 2;
 }
+
+.payment-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  h3 {
+    margin-left: 13px;
+  }
+  margin-bottom: 10px;
+}
+
 /* ALERTS */
 
 .alert {

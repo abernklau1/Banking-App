@@ -43,3 +43,11 @@ export const CHANGE_PAGE = "CHANGE_PAGE";
 
 // actions to pay account
 export const SET_MAKE_PAYMENT = "SET_MAKE_PAYMENT";
+export const MAKE_PAYMENT_BEGIN = "MAKE_PAYMENT_BEGIN";
+export const MAKE_PAYMENT_SUCCESS = "MAKE_PAYMENT_SUCCESS";
+export const MAKE_PAYMENT_ERROR = "MAKE_PAYMENT_ERROR";
+
+// actions to delete account
+export const DELETE_ACCOUNT_BEGIN = "DELETE_ACCOUNT_BEGIN";
+export const DELETE_ACCOUNT_SUCCESS = "DELETE_ACCOUNT_SUCCESS";
+export const DELETE_ACCOUNT_ERROR = "DELETE_ACCOUNT_ERROR";

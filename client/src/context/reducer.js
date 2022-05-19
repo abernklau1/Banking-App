@@ -21,6 +21,12 @@ import {
   CLEAR_SEARCH,
   CHANGE_PAGE,
   SET_MAKE_PAYMENT,
+  MAKE_PAYMENT_BEGIN,
+  MAKE_PAYMENT_SUCCESS,
+  MAKE_PAYMENT_ERROR,
+  DELETE_ACCOUNT_BEGIN,
+  DELETE_ACCOUNT_SUCCESS,
+  DELETE_ACCOUNT_ERROR,
 } from "./actions";
 
 import { initialState } from "./appContext";
@@ -132,7 +138,7 @@ const reducer = (state, action) => {
   }
 
   if (action.type === SET_MAKE_PAYMENT) {
-    const account = state.accounts.find(
+    const account = state.accounts.filter(
       (account) => account._id === action.payload.id
     );
     const { _id, accType, balance } = account;
@@ -142,6 +148,54 @@ const reducer = (state, action) => {
       payAccountId: _id,
       accType,
       balance,
+    };
+  }
+
+  if (action.type === MAKE_PAYMENT_BEGIN) {
+    return { ...state, isLoading: true };
+  }
+
+  if (action.type === MAKE_PAYMENT_SUCCESS) {
+    return {
+      ...state,
+      isLoading: false,
+      showAlert: true,
+      alertType: "success",
+      alertText: "Payment Successful!",
+    };
+  }
+
+  if (action.type === MAKE_PAYMENT_ERROR) {
+    return {
+      ...state,
+      isLoading: false,
+      showAlert: true,
+      alertType: "danger",
+      alertText: action.payload.msg,
+    };
+  }
+
+  if (action.type === DELETE_ACCOUNT_BEGIN) {
+    return { ...state, isLoading: true };
+  }
+
+  if (action.type === DELETE_ACCOUNT_SUCCESS) {
+    return {
+      ...state,
+      isLoading: false,
+      showAlert: true,
+      alertType: "success",
+      alertText: "Account Removed!",
+    };
+  }
+
+  if (action.type === DELETE_ACCOUNT_ERROR) {
+    return {
+      ...state,
+      isLoading: false,
+      showAlert: true,
+      alertType: "danger",
+      alertText: action.payload.msg,
     };
   }
 

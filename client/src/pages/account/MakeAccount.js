@@ -5,7 +5,8 @@ import {
   SubmitButton,
 } from "../../components";
 import { useAppContext } from "../../context/appContext";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const MakeAccount = () => {
   const [deleting, setDeleting] = useState(false);
@@ -25,6 +26,8 @@ const MakeAccount = () => {
     deleteAccount,
   } = useAppContext();
 
+  const navigate = useNavigate();
+
   const handleDelete = () => {
     setDeleting(true);
   };
@@ -36,14 +39,25 @@ const MakeAccount = () => {
       displayAlert();
       return;
     }
+
     if (isPaying) {
       makePayment();
+      return;
     } else if (isPaying && deleting) {
       deleteAccount();
+      return;
     }
 
     createAccount();
   };
+
+  useEffect(() => {
+    if (deleting) {
+      setTimeout(() => {
+        navigate("/dashboard");
+      }, 1000);
+    }
+  }, [deleting, navigate]);
 
   const handleAccountInput = (e) => {
     const { name, value } = e.target;
@@ -92,13 +106,19 @@ const MakeAccount = () => {
                 handleChange={handleAccountInput}
               />
             )}
-            <SubmitButton text="Create Account" isLoading={isLoading} />
-            {isPaying && (
-              <SubmitButton
-                text="Pay and Remove"
-                isLoading={isLoading}
-                onClick={handleDelete}
-              />
+            {isPaying ? (
+              <div className="payment-buttons">
+                <SubmitButton text="Submit Payment" isLoading={isLoading} />
+                <h3>or</h3>
+                <SubmitButton
+                  text="Pay and Remove"
+                  isLoading={isLoading}
+                  onClick={handleDelete}
+                  className="btn-remove"
+                />
+              </div>
+            ) : (
+              <SubmitButton text="Create Account" isLoading={isLoading} />
             )}
           </div>
         </form>

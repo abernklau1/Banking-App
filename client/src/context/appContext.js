@@ -22,6 +22,12 @@ import {
   CLEAR_SEARCH,
   CHANGE_PAGE,
   SET_MAKE_PAYMENT,
+  MAKE_PAYMENT_BEGIN,
+  MAKE_PAYMENT_SUCCESS,
+  MAKE_PAYMENT_ERROR,
+  DELETE_ACCOUNT_BEGIN,
+  DELETE_ACCOUNT_SUCCESS,
+  DELETE_ACCOUNT_ERROR,
 } from "./actions";
 import reducer from "./reducer";
 import axios from "axios";
@@ -216,7 +222,34 @@ const AppProvider = ({ children }) => {
     dispatch({ type: SET_MAKE_PAYMENT, payload: { id } });
   };
 
-  const makePayment = () => {};
+  const makePayment = async (id) => {
+    dispatch({ type: MAKE_PAYMENT_BEGIN });
+    try {
+      const { payment } = state;
+      authFetch.patch(`/user-account/${state.payAccountId}`, {
+        payment,
+      });
+      dispatch({ type: MAKE_PAYMENT_SUCCESS });
+    } catch (error) {
+      dispatch({
+        type: MAKE_PAYMENT_ERROR,
+        payload: { msg: error.response.data.msg },
+      });
+    }
+  };
+
+  const deleteAccount = async () => {
+    dispatch({ type: DELETE_ACCOUNT_BEGIN });
+    try {
+      await authFetch.delete(`/user-account/${state.payAccountId}`);
+      dispatch({ type: DELETE_ACCOUNT_SUCCESS });
+    } catch (error) {
+      dispatch({
+        type: DELETE_ACCOUNT_ERROR,
+        payload: { msg: error.response.data.msg },
+      });
+    }
+  };
 
   const transferMoney = async ({ details }) => {
     dispatch({ type: TRANSFER_BEGIN });
@@ -273,6 +306,7 @@ const AppProvider = ({ children }) => {
         changePage,
         setMakePayment,
         makePayment,
+        deleteAccount,
       }}
     >
       {children}

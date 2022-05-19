@@ -17,6 +17,7 @@ const createAccount = async (req, res) => {
 
 const deleteAccount = async (req, res) => {
   const { id: accountId } = req.params;
+  console.log(req.params);
   const account = await Account.findOne({ _id: accountId });
 
   if (!accountId) {
@@ -61,8 +62,8 @@ const getAccounts = async (req, res) => {
 
 const payAccount = async (req, res) => {
   const { id: accountId } = req.params;
-  const { payAmount } = req.body;
-  if (!payAmount) {
+  const { payment } = req.body;
+  if (!payment) {
     throw new BadRequestError("Please provide an amount");
   }
 
@@ -74,7 +75,7 @@ const payAccount = async (req, res) => {
   // check permissions
   checkPermissions(req.user, account.createdBy);
 
-  const newBalance = account.balance - amount;
+  const newBalance = account.balance - payment;
 
   const updatedAccount = await Account.findOneAndUpdate(
     { _id: accountId },

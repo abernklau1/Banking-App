@@ -16,7 +16,7 @@ const TotalRow = ({ total, id }) => {
         <>
           <td colSpan="3" style={{ textAlign: "left" }}>
             <Link
-              to="/make-account"
+              to="/dashboard/make-account"
               className="btn pay-btn"
               onClick={() => {
                 setMakePayment(id);
