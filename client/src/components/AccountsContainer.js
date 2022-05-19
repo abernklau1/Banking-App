@@ -18,7 +18,7 @@ const AccountsContainer = () => {
     // eslint-disable-next-line
   }, [page, search, numOfPages]);
 
-  if (accounts.length === 0) {
+  if (!accounts || accounts.length === 0) {
     return <h3>No accounts to display...</h3>;
   }
 

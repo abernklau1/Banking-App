@@ -8,7 +8,9 @@ const FormRowSelect = ({
   list,
   isTransfer,
 }) => {
-  const { mainAccount } = useAppContext();
+  const {
+    user: { mainAccount },
+  } = useAppContext();
   return (
     <div className="form-row">
       <label htmlFor={name} className="form-label">

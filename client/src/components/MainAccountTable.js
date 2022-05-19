@@ -2,7 +2,9 @@ import { useAppContext } from "../context/appContext";
 import AccountTable from "./AccountTable";
 
 const MainAccountTable = () => {
-  const { mainAccount } = useAppContext();
+  const {
+    user: { mainAccount },
+  } = useAppContext();
 
   const savings = mainAccount[0];
   const checking = mainAccount[1];

@@ -57,7 +57,7 @@ const MakeAccount = () => {
     if (deleting) {
       setTimeout(() => {
         navigate("/dashboard");
-      }, 1000);
+      }, 1500);
     }
   }, [deleting, navigate]);
 

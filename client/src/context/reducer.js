@@ -208,7 +208,7 @@ const reducer = (state, action) => {
       ...state,
       isLoading: false,
       user: action.payload.user,
-      mainAccount: action.payload.user.mainAccount,
+      //mainAccount: action.payload.user.mainAccount,
       transferred: true,
       showAlert: true,
       alertType: "success",

@@ -32,26 +32,24 @@ import {
 import reducer from "./reducer";
 import axios from "axios";
 
-let user = localStorage.getItem("user");
+const user = localStorage.getItem("user");
 const token = localStorage.getItem("token");
 const userLocation = localStorage.getItem("location");
 const signedIn = localStorage.getItem("signedIn");
-
-user = JSON.parse(user);
 
 const initialState = {
   isLoading: false,
   showAlert: false,
   alertType: "",
   alertText: "",
-  user: user ? user : null,
+  user: user ? JSON.parse(user) : null,
   token: token,
   userLocation: userLocation || "",
   isSignedIn: signedIn || false,
   showLogout: false,
   showSidebar: false,
   routingNumber: "#00000000",
-  mainAccount: user ? user.mainAccount : null,
+  //mainAccount: user.mainAccount,
   accounts: [],
   accType: "Credit Card/HELOC",
   accTypeList: ["Credit Card/HELOC", "Car Loan", "Home Loan"],
@@ -108,7 +106,7 @@ const AppProvider = ({ children }) => {
   const clearAlert = () => {
     setTimeout(() => {
       dispatch({ type: CLEAR_ALERT });
-    }, 1000);
+    }, 1500);
   };
 
   const clearValues = () => {

@@ -21,7 +21,6 @@ const Transfer = () => {
     transferMoney,
     transferred,
     transferNavigate,
-    mainAccount,
   } = useAppContext();
   const navigate = useNavigate();
 
@@ -48,7 +47,7 @@ const Transfer = () => {
     if (transferred) {
       setTimeout(() => {
         navigate("/dashboard");
-      }, 1000);
+      }, 1500);
       transferNavigate();
     }
   }, [navigate, transferred, transferNavigate]);
