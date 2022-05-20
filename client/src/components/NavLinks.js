@@ -6,7 +6,7 @@ const NavLinks = ({ classes }) => {
   return (
     <div className={classes}>
       <ul className="nav-list">
-        <NavLink href="" text="ATM Locations" />
+        <NavLink href="/" text="Home" />
         <NavLink href="/about" text="About" />
         <NavLink href="/support" text="Support" />
         {isSignedIn ? <NavUser /> : <NavLink href="/register" text="Login" />}

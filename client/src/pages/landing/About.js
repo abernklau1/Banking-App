@@ -1,6 +1,6 @@
 const About = () => {
   return (
-    <section className="content-container">
+    <section className="content-container about">
       <header className="hero">
         <img src="bank-employees.jpg" alt="Bank Employees" />
         <p>

@@ -721,10 +721,6 @@ table tbody tr:last-of-type {
 
 /* About Page */
 
-.about {
-  padding-bottom: var(--footer-height);
-}
-
 .hero {
   margin: 1rem auto;
   max-width: 640px;
@@ -745,6 +741,39 @@ table tbody tr:last-of-type {
 .to-customer img {
   width: 26rem;
   box-shadow: var(--box-shadow-1);
+}
+
+// SUPPORT
+.support {
+  h2 {
+    margin-top: 15px;
+  }
+}
+.support-options {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  margin: 25px;
+  div {
+    margin-top: 15px;
+  }
+  p {
+    span {
+      display: block;
+    }
+  }
+}
+
+.chat {
+  color: black;
+  &:hover {
+    color: var(--blue);
+  }
+  .dots {
+    margin-bottom: 2rem;
+  }
 }
 
 /* MEDIA QUERIES */
@@ -830,7 +859,6 @@ table tbody tr:last-of-type {
 
   /* DASHBOARD */
   .dash-list {
-    text-align: left;
     font-size: 0.8rem;
   }
 
@@ -850,8 +878,103 @@ table tbody tr:last-of-type {
   }
 
   .dash-list {
-    margin-left: 2.3rem;
+    margin-left: 2.3rem auto;
     flex-wrap: wrap;
     width: 250px;
+  }
+}
+
+@media (max-width: 550px) {
+  // HOME
+  .logo-container {
+    width: 300px;
+
+    .home-par {
+      font-size: 1.38rem;
+    }
+  }
+  .home-img {
+    width: 290px;
+    margin-left: 10px;
+  }
+
+  .logo-pages {
+    width: 270px;
+  }
+
+  // REGISTER
+  .form-outline {
+    width: 300px;
+    .form-row {
+      margin: auto;
+      label {
+        text-align: center;
+        margin-top: 10px;
+      }
+    }
+  }
+
+  // ABOUT
+  .about {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .hero {
+    width: 300px;
+    img {
+      width: 300px;
+    }
+  }
+  .to-customer {
+    width: 300px;
+    margin: auto;
+    img {
+      width: 300px;
+    }
+    text-align: center;
+  }
+
+  // SUPPORT
+  .support-options {
+    p {
+      span {
+        display: block;
+      }
+    }
+  }
+
+  // DASHBOARD
+  .dash-nav-list {
+    width: 300px;
+    .dash-nav-items {
+      width: 300px;
+      a {
+        line-height: 2;
+        width: 75px;
+        font-size: 0.7rem;
+      }
+    }
+  }
+
+  // ACCOUNTS
+  .account-sections {
+    width: 300px;
+    margin-left: 27px;
+    header {
+      width: 300px;
+    }
+    h2 {
+      text-align: center;
+    }
+    .account-container {
+      width: 300px;
+      margin-left: 0;
+    }
+  }
+
+  // TRANSFER
+  .transfers {
+    margin-left: 12px;
   }
 }
