@@ -1,0 +1,26 @@
+Server Side: {
+devDependencies: {
+concurrently
+}
+bcryptjs
+dotenv
+express
+express-async-errors
+express-mongo-sanitize
+express-rate-limit
+helmet
+http-status-codes
+jsonwebtoken
+mongoose
+morgan
+validator
+xss-clean
+}
+
+Client Side {
+axios
+node-sass
+react
+react-icons
+react-router-dom
+}
