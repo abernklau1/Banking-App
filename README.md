@@ -23,7 +23,7 @@ The technologies within this project include:
 This project's dependencies can be found in the BankAppDependencies.txt file. These are all the packages used to create this project, just install using npm: ``` npm i <packageName> ``` once you have cloned the project. I found that when cloning a project using react there was a bug whenever I made a change on the client side: ```ERROR in Plugin "react" was conflicted between "package.json » eslint-config-react-app```. This is due to a casing problem -- on windows specifically -- in which one of the directories that the node_modules is looking for is of a different case. A quick but impermanent solution is to resave (ctl + s) your package.json on the client side but the problem persists so the other option is to find the specific folder through File Explorer or cd using the terminal into the project folder with the exact casing.
 
 ## Where to view
-A working build of this app can be found here <a href="century-bank.herokuapp.com">Century Bank</a>
+A working build of this app can be found here <a href="https://century-bank.herokuapp.com">Century Bank</a>
 
 ## License
 © 2022 Andrew Bernklau
